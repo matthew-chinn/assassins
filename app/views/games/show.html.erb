@@ -1,4 +1,28 @@
 <h1><%= @game.title %></h1>
 <p><%= @game.description %></p>
 
-<a id="add btn">Add people</a>
+<div class="add-players">
+    <a id="add-btn" class="btn">Add players</a>
+    <div id="add-form">
+        <div class="form">
+            <%= form_tag("/games/#{@game.id}/add-players", method: "post") do %>
+                <%= label_tag(:alpha, "Add Alpha names separated by a comma") %>
+                <%= text_area_tag :alpha %>
+
+                <%= label_tag(:phi, "Add Phi names separated by a comma") %>
+                <%= text_area_tag :phi %>
+
+                <%= label_tag(:omega, "Add Omega names separated by a comma") %>
+                <%= text_area_tag :omega %>
+
+                <%= label_tag(:rho, "Add Rho names separated by a comma") %>
+                <%= text_area_tag :rho %>
+
+                <%= label_tag(:pi, "Add Pi names separated by a comma") %>
+                <%= text_area_tag :pi%>
+
+                <%= submit_tag("Submit", class:"btn submit") %>
+            <% end %>
+        </div>
+    </div>
+</div>

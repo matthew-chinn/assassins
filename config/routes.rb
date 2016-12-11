@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
    root 'pages#home'
    resources :games
+   post 'games/:id/add-players' => 'games#add_players', as: :add_players
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
