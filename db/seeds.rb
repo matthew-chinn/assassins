@@ -16,7 +16,7 @@ pi = ["Apple", "Peach", "Blueberry", "Chicken"]
 
 families = {"alpha" => alpha, 
             "phi" => phi,
-            "oemga" => omega, 
+            "omega" => omega, 
             "rho" => rho, 
             "pi" => pi}      
 
