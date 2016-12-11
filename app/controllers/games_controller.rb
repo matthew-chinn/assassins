@@ -20,14 +20,18 @@ class GamesController < ApplicationController
         @game = Game.find(params[:id])
     end
 
+    def teams
+        ["Alpha", "Phi", "Omega", "Rho", "Pi"]
+    end
+    helper_method :teams
+
     #add players to the game
     def add_players
         @game = Game.find(params[:id])
-        families = ["alpha", "phi", "omega", "rho", "pi"]
         success = true
         players = []
-        families.each do |f|
-            temp = add_players_helper(f, params[f.to_sym], @game)
+        teams.each do |team|
+            temp = add_players_helper(team, params[team.to_sym], @game)
             #error getting player names, stop
             if temp == nil
                 #update error msg once added functionality
