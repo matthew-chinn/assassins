@@ -8,6 +8,19 @@
 </head>
 <body>
 
+<% if flash[:success] or flash[:notice] %>
+<div class="flash success">
+  <p><%= flash[:success] %></p>
+  <p><%= flash[:notice] %></p>
+</div>
+<% elsif flash[:danger] or flash[:alert] %>
+<div class="flash danger">
+  <p><%= flash[:danger] %></p>
+  <p><%= flash[:alert] %></p>
+</div>
+<% end %>
+
+
 <%= yield %>
 
 </body>
