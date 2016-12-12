@@ -54,6 +54,28 @@ class GamesController < ApplicationController
         redirect_to action: 'show', id: @game.id
     end
 
+    #Assign all the targets then render page to view
+    def assign_targets
+        @game = Game.find(params[:id])
+        
+        #Hash of teams to players that are still alive
+        @teams = @game.assign_targets
+        if not @teams
+            #if unsuccessful, redirect to show page
+            flash[:danger] = "Error assigning targets"
+            redirect_to action: 'show', id: @game.id
+            return
+        end
+
+        redirect_to action: 'view_targets', id: @game.id
+    end
+
+    def view_targets
+        @game = Game.find(params[:id])
+        @teams = @game.teams_hash(true)
+        render 'targets'
+    end
+
     private
     def game_params 
         params.require(:game).permit(:title, :description, :admin_email)

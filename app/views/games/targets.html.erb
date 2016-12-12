@@ -1,0 +1,24 @@
+<h1>Assignments</h1>
+<% if @teams.count == 0 %>
+    <p>No assignments yet</p>
+<% end %>
+
+<% @teams.each do |team| %>
+    <table class="<%= team %>">
+        <tr>
+            <th><%= team %></th>
+        </tr>
+
+        <tr>
+            <td>Player</td>
+            <td>Target</td>
+        </tr>
+
+        <% team.each do |person| %>
+            <tr>
+                <td><%= person %></td>
+                <td><%= Player.find(person.target_id) %></td>
+            </tr>
+        <% end %>
+    </table>
+<% end %>

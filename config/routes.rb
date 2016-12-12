@@ -6,6 +6,8 @@ Rails.application.routes.draw do
    root 'pages#home'
    resources :games
    post 'games/:id/add-players' => 'games#add_players', as: :add_players
+   post 'games/:id/assign-targets' => 'games#assign_targets', as: :assign_targets
+   get 'games/:id/view_targets' => 'games#view_targets', as: :view_targets
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

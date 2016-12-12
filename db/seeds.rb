@@ -14,15 +14,16 @@ omega = ["Rebekkah", "Amanda", "Tien", "Colette"]
 rho = ["Bill", "Bob", "Robert", "Will"]
 pi = ["Apple", "Peach", "Blueberry", "Chicken"]
 
-families = {"alpha" => alpha, 
-            "phi" => phi,
-            "omega" => omega, 
-            "rho" => rho, 
-            "pi" => pi}      
+families = {"Alpha" => alpha, 
+            "Phi" => phi,
+            "Omega" => omega, 
+            "Rho" => rho, 
+            "Pi" => pi}      
 
 families.each do |family, people|
+    t = Team.create(name: family, game_id: game.id)
     people.each do |person|
-        Player.create(name: person, game_id: game.id, family: family)
+        Player.create(name: person, team_id: t.id, family: family)
     end
 end
 
