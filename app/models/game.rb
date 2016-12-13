@@ -13,13 +13,30 @@ class Game < ActiveRecord::Base
         team_counts = teams.map{ |team| team.count }
         total_count = team_counts.reduce(:+)
 
-        if not possible_to_match_all?(team_counts)
+        if not Game.possible_to_match_all?(team_counts)
             #what to do here
-            return {}
+            #return {}
         end
 
+        #to test edge_set, should be changed later
+        return edge_set
     end
 
+    #return hash of team to its players
+    #if alive is true, only include players that are alive
+    def teams_hash(alive_only = false)
+        res = {}
+        self.teams do |team|
+            if alive_only
+                res[team] = Player.where(team_id: team.id, alive: true)
+            else
+                res[team] = Player.where(team_id: team.id)
+            end
+        end
+        return res
+    end
+
+    private
     #returns if it is possible to match all teams using their counts
     #i.e. if team A has 10, team B has 3, and team C has 4, can't match all of A
     def self.possible_to_match_all?(team_counts)
@@ -42,17 +59,15 @@ class Game < ActiveRecord::Base
         return true
     end
 
-    #return hash of team to its players
-    #if alive is true, only include players that are alive
-    def teams_hash(alive_only = false)
-        res = {}
-        self.teams do |team|
-            if alive_only
-                res[team] = Player.where(team_id: team.id, alive: true)
-            else
-                res[team] = Player.where(team_id: team.id)
+    def edge_set
+        set = Set.new
+        self.teams.each do |team1|
+            self.teams.each do |team2|
+                if team1 != team2
+                    set.add( UnDirectedEdge.new(team1,team2) )
+                end
             end
         end
-        return res
+        return set
     end
 end
