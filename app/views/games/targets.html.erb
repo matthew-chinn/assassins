@@ -3,10 +3,10 @@
     <p>No assignments yet</p>
 <% end %>
 
-<% @teams.each do |team| %>
-    <table class="<%= team %>">
+<% @teams.keys.each do |team| %>
+    <table class="<%= team.name %>">
         <tr>
-            <th><%= team %></th>
+            <th><%= team.name %></th>
         </tr>
 
         <tr>
@@ -14,10 +14,13 @@
             <td>Target</td>
         </tr>
 
-        <% team.each do |person| %>
+        <% team.players.each do |person| %>
             <tr>
-                <td><%= person %></td>
-                <td><%= Player.find(person.target_id) %></td>
+                <td><%= person.name %></td>
+                <td>
+                    <%= "No target" if not person.target_id %>
+                    <%= Player.find(person.target_id) if person.target_id%>
+                </td>
             </tr>
         <% end %>
     </table>
