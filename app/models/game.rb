@@ -18,15 +18,14 @@ class Game < ActiveRecord::Base
             #return {}
         end
 
-        #to test edge_set, should be changed later
-        return edge_set
+        graph = get_graph
     end
 
     #return hash of team to its players
     #if alive is true, only include players that are alive
     def teams_hash(alive_only = false)
         res = {}
-        self.teams do |team|
+        self.teams.each do |team|
             if alive_only
                 res[team] = Player.where(team_id: team.id, alive: true)
             else
@@ -59,15 +58,28 @@ class Game < ActiveRecord::Base
         return true
     end
 
-    def edge_set
-        set = Set.new
-        self.teams.each do |team1|
-            self.teams.each do |team2|
+    #create graph with rgl library containing edges between players on different
+    #teams
+    def get_graph
+        require 'rgl/adjacency'
+        g = RGL::AdjacencyGraph.new
+
+        self.teams.each_with_index do |team1, i|
+            self.teams.each_with_index do |team2, j|
+                if j <= i #undirected graph only needs one edge, don't repeat
+                    next
+                end
+
                 if team1 != team2
-                    set.add( UnDirectedEdge.new(team1,team2) )
+                    team1.players.each do |player1|
+                        team2.players.each do |player2|
+                            g.add_edge(player1,player2)
+                        end
+                    end
                 end
             end
         end
-        return set
+
+        return g
     end
 end
