@@ -7,18 +7,26 @@ class Game < ActiveRecord::Base
     #return teams_hash(alive) 
     def assign_targets
         res = {}
+        #alive players
         team_hash = teams_hash(true)
         teams = team_hash.keys
 
-        team_counts = teams.map{ |team| team.count }
+        team_counts = teams.map{ |team| team.players.count }
         total_count = team_counts.reduce(:+)
-
         if not Game.possible_to_match_all?(team_counts)
             #what to do here
             #return {}
         end
 
-        graph = get_graph
+        #only time people can have each other as targets
+        if total_count == 2
+            p1 = teams[0].players.first
+            p2 = teams[1].players.first
+
+            p1.update_attribute(:target_id,  p2.id)
+            p2.update_attribute(:target_id,  p1.id)
+        end
+        return teams_hash(true)
     end
 
     #return hash of team to its players
@@ -27,9 +35,11 @@ class Game < ActiveRecord::Base
         res = {}
         self.teams.each do |team|
             if alive_only
-                res[team] = Player.where(team_id: team.id, alive: true)
+                players = Player.where(team_id: team.id, alive: true)
+                res[team] =  players if players.count > 0
             else
-                res[team] = Player.where(team_id: team.id)
+                players = Player.where(team_id: team.id)
+                res[team] =  players if players.count > 0
             end
         end
         return res
@@ -58,28 +68,4 @@ class Game < ActiveRecord::Base
         return true
     end
 
-    #create graph with rgl library containing edges between players on different
-    #teams
-    def get_graph
-        require 'rgl/adjacency'
-        g = RGL::AdjacencyGraph.new
-
-        self.teams.each_with_index do |team1, i|
-            self.teams.each_with_index do |team2, j|
-                if j <= i #undirected graph only needs one edge, don't repeat
-                    next
-                end
-
-                if team1 != team2
-                    team1.players.each do |player1|
-                        team2.players.each do |player2|
-                            g.add_edge(player1,player2)
-                        end
-                    end
-                end
-            end
-        end
-
-        return g
-    end
 end

@@ -11,16 +11,21 @@ class GameTest < ActiveSupport::TestCase
       assert_not Game.possible_to_match_all?([10])
   end
 
-  test "Game.assign_targets" do
-      g = Game.first
-      set = g.assign_targets
-      if set.count == 0
-          puts "Empty set"
-      end
+  test "Game.assign_targets 2 players" do
+      g = Game.create
+      t1 = Team.create(game_id: g.id, name: "A")
+      t2 = Team.create(game_id: g.id, name: "B")
 
-      set.each do |edge|
-          puts edge.to_s
-      end
+      p1 = Player.create(name: "Bill", team_id: t1.id)
+      p2 = Player.create(name: "Bob", team_id: t2.id)
+
+      g.assign_targets
+
+      p1.reload
+      p2.reload
+
+      assert p1.target_id == p2.id
+      assert p2.target_id == p1.id
   end
 
 end
