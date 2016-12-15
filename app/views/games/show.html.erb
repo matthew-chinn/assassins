@@ -6,9 +6,9 @@
     <div id="add-form">
         <div class="form">
             <%= form_tag("/games/#{@game.id}/add-players", method: "post") do %>
-                <% teams.each do |team| %>
-                    <%= label_tag(team.to_sym, "Add #{team} names separated by a comma") %>
-                    <%= text_area_tag team.to_sym %>
+                <% @game.teams.each do |team| %>
+                    <%= label_tag(team.name.to_sym, "Add #{team.name} names separated by a comma") %>
+                    <%= text_area_tag team.name.to_sym %>
                 <% end %>
                 <%= submit_tag("Submit", class:"btn submit") %>
             <% end %>

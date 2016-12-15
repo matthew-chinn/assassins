@@ -19,7 +19,7 @@
                 <td><%= person.name %></td>
                 <td>
                     <%= "No target" if not person.target_id %>
-                    <%= Player.find(person.target_id) if person.target_id%>
+                    <%= Player.find(person.target_id).name if person.target_id%>
                 </td>
             </tr>
         <% end %>
