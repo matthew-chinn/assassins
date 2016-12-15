@@ -1,6 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    PriorityQueue (0.1.2)
     actionmailer (4.2.4)
       actionpack (= 4.2.4)
       actionview (= 4.2.4)
@@ -145,6 +146,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  PriorityQueue
   byebug
   coffee-rails (~> 4.1.0)
   jbuilder (~> 2.0)

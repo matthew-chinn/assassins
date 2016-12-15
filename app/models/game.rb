@@ -16,6 +16,7 @@ class Game < ActiveRecord::Base
         if not Game.possible_to_match_all?(team_counts)
             #what to do here
             #return {}
+            return nil
         end
 
         #only time people can have each other as targets
@@ -26,6 +27,9 @@ class Game < ActiveRecord::Base
             p1.update_attribute(:target_id,  p2.id)
             p2.update_attribute(:target_id,  p1.id)
         end
+
+        Assigner.assign_targets(team_hash)
+
         return teams_hash(true)
     end
 
