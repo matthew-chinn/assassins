@@ -5,6 +5,7 @@ class GamesController < ApplicationController
 
     def create
         @created_game = Game.create(game_params)
+        create_teams(params[:teams], @created_game)
 
         if @created_game.errors.any?
             flash[:danger] = "New game could not be made"
@@ -20,18 +21,13 @@ class GamesController < ApplicationController
         @game = Game.find(params[:id])
     end
 
-    def teams
-        ["Alpha", "Phi", "Omega", "Rho", "Pi"]
-    end
-    helper_method :teams
-
     #add players to the game
     def add_players
         @game = Game.find(params[:id])
         success = true
         players = []
-        teams.each do |team|
-            temp = add_players_helper(team, params[team.to_sym], @game)
+        @game.teams.each do |team|
+            temp = add_players_helper(team, params[team.name.to_sym])
             #error getting player names, stop
             if temp == nil
                 #update error msg once added functionality
@@ -59,8 +55,8 @@ class GamesController < ApplicationController
         @game = Game.find(params[:id])
         
         #Hash of teams to players that are still alive
-        @teams = @game.assign_targets
-        if not @teams
+        teams = @game.assign_targets
+        if not teams
             #if unsuccessful, redirect to show page
             flash[:danger] = "Error assigning targets"
             redirect_to action: 'show', id: @game.id
@@ -81,12 +77,19 @@ class GamesController < ApplicationController
         params.require(:game).permit(:title, :description, :admin_email)
     end
 
-    #take in the text input and the family and add people to game
-    def add_players_helper(family, input, game)
+    def create_teams(text, game)
+        toks = text.split(',')
+        toks.each do |t|
+            game.teams << Team.create(name: t, game_id: game.id)
+        end
+    end
+
+    #take in the text input and the team and add people to game
+    def add_players_helper(team, input)
         names = input.split(',')
         players = []
         names.each do |name|
-            player = Player.new( name: name, game_id: @game.id, family: family)
+            player = Player.new( name: name, team_id: team.id )
             players << player
         end
 
