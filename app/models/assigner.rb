@@ -69,13 +69,15 @@ class Assigner
     def self.populate_collections(team_hash)
         team_hash.keys.each do |team|
             @team_to_index[team] = @players.count
-            @team_to_count[team] = team.players.count
+            @team_to_count[team] = team_hash[team].count
 
             #negative because priority queue takes min
-            @queue[team] = -team.players.count
+            @queue[team] = -team_hash[team].count
 
-            team.players.each do |player|
-                @players << player
+            team_hash[team].each do |player|
+                if player.alive
+                    @players << player
+                end
             end
         end
     end
@@ -135,17 +137,19 @@ class Assigner
     end
 
     def self.reassign_player(player)
-        puts "ATTEMPT TO REASSIGN #{player.name}"
-
         player_team = Team.find(player.team_id)
         @players.each do |other_player| #someone whose target we will take
+            next if !other_player.alive
+            next if other_player.target_id == nil
+
             other_team = Team.find(other_player.team_id)
             next if other_team == player_team #same team, has same problem
+
             other_target = Player.find(other_player.target_id)
             other_target_team = Team.find(other_target.team_id)
             next if other_target_team == player_team #invalid target
 
-            @players_to_reassign.each do |potential_target|
+            @available_people.each do |potential_target|
                 target_team = Team.find(potential_target.team_id)
                 next if other_team == target_team
                 player.update_attribute(:target_id, other_player.target_id)

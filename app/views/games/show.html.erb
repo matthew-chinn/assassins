@@ -24,7 +24,7 @@
                     <td><%= person.alive %></td>
                     <td><%= person.kills %></td>
                     <% if @admin %>
-                        <% if person.target_id == nil %>
+                        <% if person.target_id == nil or !person.alive %>
                             <td>---</td>
                         <% else %>
                             <% p = Player.find_by(id: person.target_id) %>
