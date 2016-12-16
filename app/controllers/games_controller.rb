@@ -38,6 +38,10 @@ class GamesController < ApplicationController
         @key = params[:key]
     end
 
+    def index
+        @games = Game.all
+    end
+
     #add players to the game
     def add_players
         @game = Game.find(params[:id])

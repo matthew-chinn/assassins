@@ -9,6 +9,7 @@ Rails.application.routes.draw do
    post 'games/:id/assign-targets' => 'games#assign_targets', as: :assign_targets
    post 'redirect-to-game' => 'pages#redirect', as: :redirect_to_game
    post 'games/:id/life-update' => 'games#life_update', as: :life
+   get 'about' => 'pages#about', as: :about
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

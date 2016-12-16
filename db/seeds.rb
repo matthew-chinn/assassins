@@ -27,3 +27,16 @@ families.each do |family, people|
     end
 end
 
+game = Game.create(title: "Small Game", description: "Test out application", key: "asdf")
+t1 = ["Bill", "Bob", "Robert", "Will"]
+t2 = ["Apple", "Peach", "Blueberry", "Chicken"]
+
+families = {"T1" => t1, 
+            "T2" => t2}      
+
+families.each do |family, people|
+    t = Team.create(name: family, game_id: game.id)
+    people.each do |person|
+        Player.create(name: person, team_id: t.id, team: t)
+    end
+end

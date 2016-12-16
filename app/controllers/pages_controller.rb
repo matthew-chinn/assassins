@@ -2,6 +2,9 @@ class PagesController < ApplicationController
     def home
     end
 
+    def about
+    end
+
     def redirect
         g = Game.find_by(key: params[:key])
         if not g

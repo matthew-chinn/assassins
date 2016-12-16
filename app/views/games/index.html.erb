@@ -1,0 +1,13 @@
+<% if @games.count == 0 %>
+    <p>
+        No games created yet. Make one now 
+        <%= link_to "here!", new_game_path, class: "create btn" %>
+    </p>
+<% else %>
+    <ul>
+    <% @games.each do |game| %>
+        <li><%= link_to "#{game.title}: #{game.description}",
+                game_path(game) %></li>
+    <% end %>
+    </ul>
+<% end %>

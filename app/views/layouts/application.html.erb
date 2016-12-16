@@ -23,5 +23,11 @@
 
 <%= yield %>
 
+<div class="footer">
+    <%= link_to "Home", root_path %>
+    <%= link_to "Create game", new_game_path %>
+    <%= link_to "View games", games_path %>
+    <%= link_to "About", about_path %>
+</div>
 </body>
 </html>
