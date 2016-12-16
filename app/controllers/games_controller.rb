@@ -54,7 +54,6 @@ class GamesController < ApplicationController
     def assign_targets
         @game = Game.find(params[:id])
         
-        #Hash of teams to players that are still alive
         teams = @game.assign_targets
         if not teams
             #if unsuccessful, redirect to show page

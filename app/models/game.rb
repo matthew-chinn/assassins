@@ -12,25 +12,13 @@ class Game < ActiveRecord::Base
         teams = team_hash.keys
 
         team_counts = teams.map{ |team| team.players.count }
-        total_count = team_counts.reduce(:+)
         if not Game.possible_to_match_all?(team_counts)
             #what to do here
             #return {}
-            return nil
+            return false
         end
 
-        #only time people can have each other as targets
-        if total_count == 2
-            p1 = teams[0].players.first
-            p2 = teams[1].players.first
-
-            p1.update_attribute(:target_id,  p2.id)
-            p2.update_attribute(:target_id,  p1.id)
-        end
-
-        Assigner.assign_targets(team_hash)
-
-        return teams_hash(true)
+        return Assigner.assign_targets(team_hash)
     end
 
     #return hash of team to its players
