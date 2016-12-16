@@ -133,10 +133,15 @@ class Assigner
     end
 
     def self.reassign_player(player)
+        puts "ATTEMPT TO REASSIGN #{player.name}"
+
         player_team = Team.find(player.team_id)
         @players.each do |other_player| #someone whose target we will take
             other_team = Team.find(other_player.team_id)
             next if other_team == player_team #same team, has same problem
+            other_target = Player.find(other_player.target_id)
+            other_target_team = Team.find(other_target.team_id)
+            next if other_target_team == player_team #invalid target
 
             @players_to_reassign.each do |potential_target|
                 target_team = Team.find(potential_target.team_id)
@@ -153,9 +158,6 @@ class Assigner
         #save to database
         players.each do |p|
             p.save
-            #if p.target_id != nil
-            #    puts "Player: #{p.name}, Target: #{Player.find(p.target_id).name}"
-            #end
         end
     end
 end

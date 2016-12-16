@@ -34,7 +34,7 @@ class GameTest < ActiveSupport::TestCase
 
             players = []
             (1..10).each do |x|
-                player = Player.create(name: name * x + "Player", team_id: t.id) 
+                player = Player.create(name: "#{name}Player#{x}", team_id: t.id) 
                 players << player
             end
 
@@ -56,7 +56,7 @@ class GameTest < ActiveSupport::TestCase
 
             players = []
             (1..player_counts[i]).each do |x|
-                player = Player.create(name: name * x + "Player", team_id: t.id) 
+                player = Player.create(name: "#{name}Player#{x}", team_id: t.id) 
                 players << player
             end
 
@@ -76,7 +76,7 @@ class GameTest < ActiveSupport::TestCase
 
             players = []
             (1..5).each do |x|
-                player = Player.create(name: name * x + "Player", team_id: t.id) 
+                player = Player.create(name: "#{name}Player#{x}", team_id: t.id) 
                 players << player
             end
 
@@ -98,7 +98,7 @@ class GameTest < ActiveSupport::TestCase
 
             players = []
             (1..player_counts[i]).each do |x|
-                player = Player.create(name: name * x + "Player", team_id: t.id) 
+                player = Player.create(name: "#{name}Player#{x}", team_id: t.id) 
                 players << player
             end
 
