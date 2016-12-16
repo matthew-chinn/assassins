@@ -23,7 +23,7 @@ families = {"Alpha" => alpha,
 families.each do |family, people|
     t = Team.create(name: family, game_id: game.id)
     people.each do |person|
-        Player.create(name: person, team_id: t.id, team: t)
+        Player.create(name: person, team_id: t.id, team: t, contact: "7dilbertnerd@gmail.com", phone: false)
     end
 end
 
@@ -37,6 +37,6 @@ families = {"T1" => t1,
 families.each do |family, people|
     t = Team.create(name: family, game_id: game.id)
     people.each do |person|
-        Player.create(name: person, team_id: t.id, team: t)
+        Player.create(name: person, team_id: t.id, team: t, contact: "7dilbertnerd@gmail.com", phone: false)
     end
 end
