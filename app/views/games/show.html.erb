@@ -34,7 +34,7 @@
                         <% if person.alive %>
                             <%= (link_to "Killed Target", life_path(
                                 id: @game.id, player: person.id, key: @key, 
-                                act: "kill"), method: :post) if p != person %>
+                                act: "kill"), method: :post) if p and p != person %>
                             <%= link_to "Suicide", life_path(
                                 id: @game.id, player: person.id, key: @key, 
                                 act: "suicide"), method: :post %>
