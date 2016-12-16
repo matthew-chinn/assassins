@@ -118,8 +118,10 @@ class Assigner
             index = (@team_to_index[team] + @team_to_count[team] + 
                      rand) % @players.count
 
-            if @assigned_indices.include? index
-                next #try another index because this person has been assigned
+            if @assigned_indices.include? index || @players[index].target_id == player_to_assign.id
+                #try another index because this person has been assigned
+                #or that person's target is this player
+                next 
             end
 
             #the person is a valid assignment
