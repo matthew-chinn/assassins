@@ -1,0 +1,13 @@
+<%= form_tag send_alerts_path(@game), method: "post" do %>
+    <%= label_tag(:message, "What would you like the alert to say?") %>
+    <%= text_area_tag :message %>
+
+    <%= label_tag(:alive_only, "Only to people that are alive?") %>
+    <%= check_box_tag :alive_only %>
+
+    <%= label_tag(:include_assignment, "Include target assignment in message?") %>
+    <%= check_box_tag :include_assignment %>
+
+    <%= hidden_field_tag :key, @key %>
+    <%= submit_tag("Send", class:"btn submit") %>
+<% end %>

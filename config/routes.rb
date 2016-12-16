@@ -12,6 +12,8 @@ Rails.application.routes.draw do
    get 'about' => 'pages#about', as: :about
    get 'games/:id/signup' => 'games#signup', as: :signup
    post 'games/:id/add-player' => 'games#add_player', as: :add_player
+   get 'games/:id/create-alerts' => 'games#create_alerts', as: :create_alerts
+   post 'games/:id/create-alerts' => 'games#send_alerts', as: :send_alerts
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
