@@ -57,6 +57,10 @@
 </div>
 
 <% if @admin %>
+    <div class="signup">
+        <%= link_to "Signup link", signup_path(@game) %>
+    </div>
+
     <div class="add-players">
         <a id="add-btn" class="btn">Add players</a>
         <div id="add-form">
