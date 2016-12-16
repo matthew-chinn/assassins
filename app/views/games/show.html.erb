@@ -1,27 +1,57 @@
 <h1><%= @game.title %></h1>
 <p><%= @game.description %></p>
 
-<div class="add-players">
-    <a id="add-btn" class="btn">Add players</a>
-    <div id="add-form">
-        <div class="form">
-            <%= form_tag("/games/#{@game.id}/add-players", method: "post") do %>
-                <% @game.teams.each do |team| %>
-                    <%= label_tag(team.name.to_sym, "Add #{team.name} names separated by a comma") %>
-                    <%= text_area_tag team.name.to_sym %>
+<div class="players">
+    <% @teams.each do |team| %>
+        <table class="<%= team.name %>">
+            <tr>
+                <th><%= team.name %></th>
+            </tr>
+
+            <tr>
+                <td>Player</td>
+                <td>Alive</td>
+                <td>Kills</td>
+                <% if @admin %>
+                    <td>Target</td>
                 <% end %>
-                <%= submit_tag("Submit", class:"btn submit") %>
+            </tr>
+
+            <% team.players.each do |person| %>
+                <tr>
+                    <td><%= person.name %></td>
+                    <td><%= person.alive %></td>
+                    <td><%= person.kills %></td>
+                    <% if @admin %>
+                        <% p = Player.find_by(id: person.target_id) %>
+                        <td><%= p.name if p %></td>
+                        <td><%= '-' if not p %></td>
+                    <% end %>
+                </tr>
             <% end %>
+        </table>
+    <% end %>
+</div>
+
+<% if @admin %>
+    <div class="add-players">
+        <a id="add-btn" class="btn">Add players</a>
+        <div id="add-form">
+            <div class="form">
+                <%= form_tag("/games/#{@game.id}/add-players", method: "post") do %>
+                    <% @game.teams.each do |team| %>
+                        <%= label_tag(team.name.to_sym, "Add #{team.name} names separated by a comma") %>
+                        <%= text_area_tag team.name.to_sym %>
+                    <% end %>
+                    <%= hidden_field_tag "key", @key %>
+                    <%= submit_tag("Submit", class:"btn submit") %>
+                <% end %>
+            </div>
         </div>
     </div>
-</div>
 
-<div class="assign-targets">
-    <%= link_to "Assign targets", assign_targets_path, method: :post, class: "btn", 
-                                                    id: "assign-targets-btn" %>
-</div>
-
-<div class="view-targets">
-    <%= link_to "View targets", view_targets_path, class: "btn", 
-                                                     id: "view-targets-btn" %>
-</div>
+    <div class="assign-targets">
+        <%= link_to "Assign targets", assign_targets_path(key: @key), method: :post, class: "btn", 
+            id: "assign-targets-btn" %>
+    </div>
+<% end %>

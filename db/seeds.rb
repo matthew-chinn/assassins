@@ -6,7 +6,7 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-game = Game.create(title: "Sample", description: "Test out application", admin_email: "chinnymasta@gmail.com", password: "123")
+game = Game.create(title: "Sample", description: "Test out application", key: "123")
 
 alpha = [ "Matthew", "Brandon", "William", "Brad", "Byung" ]
 phi = ["Sean", "Evan", "Grant"]
@@ -23,7 +23,7 @@ families = {"Alpha" => alpha,
 families.each do |family, people|
     t = Team.create(name: family, game_id: game.id)
     people.each do |person|
-        Player.create(name: person, team_id: t.id, family: family)
+        Player.create(name: person, team_id: t.id, team: t)
     end
 end
 

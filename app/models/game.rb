@@ -1,6 +1,9 @@
 class Game < ActiveRecord::Base
-    has_many :teams
-    has_many :players, through: :teams, dependent: :destroy
+    has_many :teams, dependent: :destroy
+    has_many :players, through: :teams
+    validates :title, presence: true
+    validates :key , presence: true
+
 
     #assign targets with the following algorithm:
     #

@@ -7,7 +7,7 @@ Rails.application.routes.draw do
    resources :games
    post 'games/:id/add-players' => 'games#add_players', as: :add_players
    post 'games/:id/assign-targets' => 'games#assign_targets', as: :assign_targets
-   get 'games/:id/view_targets' => 'games#view_targets', as: :view_targets
+   post 'redirect-to-game' => 'pages#redirect', as: :redirect_to_game
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

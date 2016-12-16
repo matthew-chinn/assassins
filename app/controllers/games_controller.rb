@@ -4,11 +4,24 @@ class GamesController < ApplicationController
     end
 
     def create
+        key = params[:game][:key]
+        g = Game.find_by(key: key)
+        if g
+            flash[:danger] = "That key is taken. Please use another"
+            @new_game = Game.new(game_params)
+            render 'new'
+            return
+        end
+
         @created_game = Game.create(game_params)
         create_teams(params[:teams], @created_game)
 
         if @created_game.errors.any?
-            flash[:danger] = "New game could not be made"
+            s = ""
+            @created_game.errors.full_messages.each do |msg|
+                s += msg
+            end
+            flash[:danger] = s
             @new_game = @created_game
             render 'new'
         else
@@ -19,6 +32,10 @@ class GamesController < ApplicationController
 
     def show
         @game = Game.find(params[:id])
+        @teams = @game.teams
+        @admin = @game.key == params[:key]
+        puts "PARAMS: #{params}"
+        @key = params[:key]
     end
 
     #add players to the game
@@ -47,7 +64,7 @@ class GamesController < ApplicationController
             end
         end
 
-        redirect_to action: 'show', id: @game.id
+        redirect_to action: 'show', id: @game.id, key: params[:key]
     end
 
     #Assign all the targets then render page to view
@@ -62,18 +79,12 @@ class GamesController < ApplicationController
             return
         end
 
-        redirect_to action: 'view_targets', id: @game.id
-    end
-
-    def view_targets
-        @game = Game.find(params[:id])
-        @teams = @game.teams_hash(true)
-        render 'targets'
+        redirect_to action: 'show', id: @game.id, key: params[:key]
     end
 
     private
     def game_params 
-        params.require(:game).permit(:title, :description, :admin_email)
+        params.require(:game).permit(:title, :description, :key)
     end
 
     def create_teams(text, game)
