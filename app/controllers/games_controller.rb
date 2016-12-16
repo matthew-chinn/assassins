@@ -34,12 +34,27 @@ class GamesController < ApplicationController
         @game = Game.find(params[:id])
         @teams = @game.teams
         @admin = @game.key == params[:key]
-        puts "PARAMS: #{params}"
         @key = params[:key]
     end
 
     def index
         @games = Game.all
+    end
+
+    def signup
+        @game = Game.find(params[:id])
+        @player = Player.new
+    end
+
+    def add_player
+        @game = Game.find(params[:id])
+        @player = Player.create(player_params)
+        if @player.errors.any?
+            flash[:danger] = "Error creating player"
+            render 'signup'
+            return
+        end
+        redirect_to action: 'show', id: @game.id
     end
 
     #add players to the game
@@ -113,6 +128,10 @@ class GamesController < ApplicationController
     private
     def game_params 
         params.require(:game).permit(:title, :description, :key)
+    end
+
+    def player_params 
+        params.require(:player).permit(:name, :contact, :phone, :team_id)
     end
 
     def create_teams(text, game)

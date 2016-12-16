@@ -10,6 +10,8 @@ Rails.application.routes.draw do
    post 'redirect-to-game' => 'pages#redirect', as: :redirect_to_game
    post 'games/:id/life-update' => 'games#life_update', as: :life
    get 'about' => 'pages#about', as: :about
+   get 'games/:id/signup' => 'games#signup', as: :signup
+   post 'games/:id/add-player' => 'games#add_player', as: :add_player
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

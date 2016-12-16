@@ -1,0 +1,17 @@
+<%= form_for @player, url: add_player_path(@game) do |f| %>
+    <%= f.label :name %>
+    <%= f.text_field :name, required: true %>
+
+    <%= f.label :contact, "Enter a phone number or email address" %>
+    <%= f.text_field :contact, required: true %>
+
+    <%= f.label :phone, "Check if phone number, Uncheck if email" %>
+    <%= f.check_box :phone %>
+
+    <%= label_tag :team, "What team are you on?" %>
+    <%= collection_select(:player, :team_id, @game.teams, :id, 
+                          :name, required: true) %>
+
+
+    <%= f.submit "Create", class:"btn submit" %>
+<% end %>
