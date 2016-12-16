@@ -1,5 +1,11 @@
 <h1><%= @game.title %></h1>
 <p><%= @game.description %></p>
+<% if @game.admin_email %>
+    <p>If you would like to join the game, please contact the admin 
+        <a href="mailto:<%=@game.admin_email%>?Subject=Assassins_Game" 
+           target="_top">here</a>
+    </p>
+<% end %>
 
 <div class="players">
     <% @teams.each do |team| %>
