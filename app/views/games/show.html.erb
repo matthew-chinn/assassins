@@ -14,6 +14,7 @@
                 <td>Kills</td>
                 <% if @admin %>
                     <td>Target</td>
+                    <td>Life</td>
                 <% end %>
             </tr>
 
@@ -23,9 +24,25 @@
                     <td><%= person.alive %></td>
                     <td><%= person.kills %></td>
                     <% if @admin %>
-                        <% p = Player.find_by(id: person.target_id) %>
-                        <td><%= p.name if p %></td>
-                        <td><%= '-' if not p %></td>
+                        <% if person.target_id == nil %>
+                            <td>---</td>
+                        <% else %>
+                            <% p = Player.find_by(id: person.target_id) %>
+                            <td><%= p.name if p %> <%= '---' if not p %></td>
+                        <% end %>
+                        <td>
+                        <% if person.alive %>
+                            <%= (link_to "Killed Target", life_path(
+                                id: @game.id, player: person.id, key: @key, 
+                                act: "kill"), method: :post) if p != person %>
+                            <%= link_to "Suicide", life_path(
+                                id: @game.id, player: person.id, key: @key, 
+                                act: "suicide"), method: :post %>
+                        <% else %>
+                            <%= link_to "Revive", life_path(
+                                id: @game.id, player: person.id, key: @key, 
+                                act: "revive"), method: :post %>
+                        <% end %>
                     <% end %>
                 </tr>
             <% end %>

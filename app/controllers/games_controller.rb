@@ -82,6 +82,30 @@ class GamesController < ApplicationController
         redirect_to action: 'show', id: @game.id, key: params[:key]
     end
 
+    def life_update
+        action = params[:act]
+        game = Game.find(params[:id])
+
+        if action == "suicide"
+            victim = Player.find(params[:player])
+            killer = Player.find_by(target_id: victim.id)
+
+            killer.update_attributes(target_id: victim.target_id) #assign killer their target
+            victim.update_attributes(alive: false, deaths: victim.deaths + 1, target_id: nil)
+        elsif action == "kill"
+            killer = Player.find(params[:player])
+            victim = Player.find(killer.target_id)
+
+            killer.update_attributes(kills: killer.kills + 1, target_id: victim.target_id)
+            victim.update_attributes(alive: false, deaths: victim.deaths + 1, 
+                                     target_id: nil)
+        elsif action == "revive"
+            player = Player.find(params[:player])
+            player.update_attribute(:alive, true)
+        end
+        redirect_to action: 'show', id: game.id, key: params[:key]
+    end
+
     private
     def game_params 
         params.require(:game).permit(:title, :description, :key)
