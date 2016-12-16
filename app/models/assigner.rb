@@ -30,10 +30,21 @@ class Assigner
 
         attempt_assignments
 
-        @players_to_reassign.each do |player|
-            #TODO reassign here
-            player.target_id = nil
-            puts "NEED TO REASSIGN #{player.name}"
+        if @players_to_reassign.count > 0
+            @available_people = []
+            @players.each_with_index do |player,i| #remove people already assigned
+                if not @assigned_indices.include? i
+                    @available_people << player
+                end
+            end
+
+            @players_to_reassign.each do |player|
+                res = reassign_player(player)
+                if not res
+                    #reassignment is unsuccessful
+                    player.target_id = nil
+                end
+            end
         end
 
         save_players(@players)
@@ -118,6 +129,23 @@ class Assigner
             return true
         end
         
+        return false
+    end
+
+    def self.reassign_player(player)
+        player_team = Team.find(player.team_id)
+        @players.each do |other_player| #someone whose target we will take
+            other_team = Team.find(other_player.team_id)
+            next if other_team == player_team #same team, has same problem
+
+            @players_to_reassign.each do |potential_target|
+                target_team = Team.find(potential_target.team_id)
+                next if other_team == target_team
+                player.update_attribute(:target_id, other_player.target_id)
+                other_player.update_attribute(:target_id, potential_target.id)
+                return true
+            end
+        end
         return false
     end
 
