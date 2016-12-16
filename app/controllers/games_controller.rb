@@ -1,4 +1,11 @@
 class GamesController < ApplicationController
+    before_action :check_admin, 
+        only: [:show, :add_players, :assign_targets, 
+               :life_update, :create_alerts, :send_alerts]
+    before_action :redirect_nonadmin, 
+        only: [:add_players, :assign_targets, 
+               :life_update, :create_alerts, :send_alerts]
+    
     def new
         @new_game = Game.new
     end
@@ -33,8 +40,6 @@ class GamesController < ApplicationController
     def show
         @game = Game.find(params[:id])
         @teams = @game.teams
-        @admin = @game.key == params[:key]
-        @key = params[:key]
     end
 
     def index
@@ -83,7 +88,7 @@ class GamesController < ApplicationController
             end
         end
 
-        redirect_to action: 'show', id: @game.id, key: params[:key]
+        redirect_to action: 'show', id: @game.id, key: @key 
     end
 
     #Assign all the targets then render page to view
@@ -98,7 +103,7 @@ class GamesController < ApplicationController
             return
         end
 
-        redirect_to action: 'show', id: @game.id, key: params[:key]
+        redirect_to action: 'show', id: @game.id, key: @key
     end
 
     def life_update
@@ -122,7 +127,18 @@ class GamesController < ApplicationController
             player = Player.find(params[:player])
             player.update_attribute(:alive, true)
         end
-        redirect_to action: 'show', id: game.id, key: params[:key]
+        redirect_to action: 'show', id: game.id, key: @key
+    end
+
+    def create_alerts
+        @game = Game.find(params[:id])
+    end
+
+    def send_alerts
+        @game = Game.find(params[:id])
+        alive_only = params[:alive_only]
+        msg = params[:message]
+        include_assignment = params[:include_assignment]
     end
 
     private
@@ -151,6 +167,22 @@ class GamesController < ApplicationController
         end
 
         return players 
+    end
+
+    def check_admin
+        if not params[:key]
+            @admin = false
+        else
+            @game = Game.find(params[:id])
+            @admin = @game.key == params[:key]
+            @key = params[:key]
+        end
+    end
+
+    def redirect_nonadmin
+        if not @admin
+            redirect_to action: 'show', id: @game.id
+        end
     end
 
 end
