@@ -8,7 +8,7 @@ class GameTest < ActiveSupport::TestCase
     end
 
     test "Game.assign_targets 2 players" do
-        g = Game.create
+        g = Game.create(title: "title", key: "123")
         t1 = Team.create(game_id: g.id, name: "A")
         t2 = Team.create(game_id: g.id, name: "B")
 
@@ -25,7 +25,7 @@ class GameTest < ActiveSupport::TestCase
     end
 
     test "Game.assign_targets 2 teams, 10 players each" do
-        g = Game.create
+        g = Game.create(title: "title", key: "123")
         team_names = [ "A", "B"]
         teams_hash = {}
 
@@ -46,7 +46,7 @@ class GameTest < ActiveSupport::TestCase
     end
 
     test "Game.assign_targets 2 teams, different players each" do
-        g = Game.create
+        g = Game.create(title: "title", key: "123")
         team_names = [ "A", "B" ]
         player_counts = [2, 1]
         teams_hash = {}
@@ -67,7 +67,7 @@ class GameTest < ActiveSupport::TestCase
     end
 
     test "Game.assign_targets 3 teams, 5 players each" do
-        g = Game.create
+        g = Game.create(title: "title", key: "123")
         team_names = [ "A", "B", "C"]
         teams_hash = {}
 
@@ -88,7 +88,7 @@ class GameTest < ActiveSupport::TestCase
     end
 
     test "Game.assign_targets 5 teams, different players each" do
-        g = Game.create
+        g = Game.create(title: "title", key: "123")
         team_names = [ "A", "B", "C", "D", "E"]
         player_counts = [25, 11, 14, 7, 28]
         teams_hash = {}
