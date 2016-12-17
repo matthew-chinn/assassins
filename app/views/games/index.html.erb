@@ -1,4 +1,4 @@
-<% if @games.count == 0 %>
+<% if not @games or @games.count == 0 %>
     <p>
         No games created yet. Make one now 
         <%= link_to "here!", new_game_path, class: "create btn" %>
