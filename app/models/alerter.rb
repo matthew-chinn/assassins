@@ -17,9 +17,7 @@ class Alerter
                 end
 
                 if player.phone
-                    res = true
-                    puts "Text Player: #{player.name}, Message: #{msg}"
-                    #res = send_text(player,msg)
+                    res = send_text(player,msg)
                 else
                     res = send_email(player,msg, game)
                 end
@@ -33,6 +31,11 @@ class Alerter
     end
 
     def self.send_text(player, msg)
+        if Rails.env.development?
+            puts "Send text: #{player.name}, #{msg}"
+            return true
+        end
+
         phone = Phonelib.parse player.contact
         num = phone.sanitized
 
@@ -49,7 +52,6 @@ class Alerter
 
     def self.send_email(player, msg, game)
         msg += "\nDont reply to this. If you have questions, ask the admin"
-        puts "Email Player: #{player.name}, Message: #{msg}"
         AlertMailer.alert(player,msg, game).deliver_now
     end
 
