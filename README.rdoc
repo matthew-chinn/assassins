@@ -1,28 +1,16 @@
+TODO:
+alerts - email or sms
+style
+leaderboard in game/show for most kills
+player settings (change contact info)
+
 == README
+This project helps facilitate a game of Assassins for a team setting. Assassins
+is a game where everyone is assigned a target, and they must kill their target
+with the specified weapon, i.e. a water gun, and then their next target will be
+their victim's target. For the team setting, people are initially assigned
+someone from another team.
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+Every so often, targets must be reassigned, because there is no guarantee that
+the first assignment of targets will result in a perfect cycle, as that may be a
+Hamiltonian cycle problem.
