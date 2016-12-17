@@ -2,29 +2,26 @@ class Alerter
     def self.send_alerts(game, alive_only, msg, include_assignment)
         teams_hash = game.teams_hash(alive_only)
         #list of people didnt send alert to
-        unsuccessful = send_alerts_helper(teams_hash, msg, include_assignment)
-    end
-
-    def self.send_email(player, msg)
+        unsuccessful = send_alerts_helper(teams_hash, msg, include_assignment, game)
     end
 
     private
-    def self.send_alerts_helper(teams_hash, message, include_assignment)
+    def self.send_alerts_helper(teams_hash, message, include_assignment, game)
         unsuccessful = []
         teams_hash.each do |team, players|
             players.each do |player|
                 msg = message.clone
-                if include_assignment and player.target_id
+                if player.alive and include_assignment and player.target_id
                     target = Player.find(player.target_id)
                     msg += "\n#{player.name}, your target is #{target.name}"
                 end
 
-                res = true
                 if player.phone
-                    res = send_text(player,msg)
+                    res = true
+                    puts "Text Player: #{player.name}, Message: #{msg}"
+                    #res = send_text(player,msg)
                 else
-                    puts "Email Player: #{player.name}, Message: #{msg}"
-                    #res = send_email(player,msg)
+                    res = send_email(player,msg, game)
                 end
 
                 if not res
@@ -48,6 +45,12 @@ class Alerter
 
         res = system(cmd)
         return res
+    end
+
+    def self.send_email(player, msg, game)
+        msg += "\nDont reply to this. If you have questions, ask the admin"
+        puts "Email Player: #{player.name}, Message: #{msg}"
+        AlertMailer.alert(player,msg, game).deliver_now
     end
 
 end

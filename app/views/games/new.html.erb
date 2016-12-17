@@ -9,7 +9,7 @@
         <%= f.text_field :description %>
 
         <%= f.label :admin_email %>
-        <%= f.text_field :admin_email %>
+        <%= f.text_field :admin_email, required: true %>
 
         <%= label_tag :key, "Add a key for you to access the admin panel" %>
         <%= f.text_field :key, required: true %>

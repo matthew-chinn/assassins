@@ -6,7 +6,7 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-game = Game.create(title: "Sample", description: "Test out application", key: "123")
+game = Game.create(title: "Sample", description: "Test out application", key: "123", admin_email: "chinnymasta@gmail.com")
 
 alpha = [ "Matthew", "Brandon", "William", "Brad", "Byung" ]
 phi = ["Sean", "Evan", "Grant"]
@@ -23,7 +23,8 @@ families = {"Alpha" => alpha,
 families.each do |family, people|
     t = Team.create(name: family, game_id: game.id)
     people.each_with_index do |person, i|
-        if i % 2 == 0
+        #if i % 2 == 0
+        if true
             Player.create(name: person, team_id: t.id, team: t, contact: "7dilbertnerd@gmail.com", phone: false)
         else
             Player.create(name: person, team_id: t.id, team: t, contact: "714-875-3219", phone: true)
@@ -31,7 +32,7 @@ families.each do |family, people|
     end
 end
 
-game = Game.create(title: "Small Game", description: "Test out application", key: "asdf")
+game = Game.create(title: "Small Game", description: "Test out application", key: "asdf", admin_email: "chinnymasta@gmail.com")
 t1 = ["Bill", "Bob", "Robert", "Will"]
 t2 = ["Apple", "Peach", "Blueberry", "Chicken"]
 
