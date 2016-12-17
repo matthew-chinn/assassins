@@ -1,5 +1,14 @@
 <h1><%= @game.title %></h1>
 <p><%= @game.description %></p>
+
+<% if not @admin %>
+    <%= form_tag("/redirect-to-game", method: "post") do %>
+        <%= label_tag(:key, "Insert admin key here") %>
+        <%= text_field_tag :key %>
+        <%= submit_tag("Submit", class:"btn submit") %>
+    <% end %>
+<% end %>
+
 <% if @game.admin_email %>
     <p>If you would like to join the game, please contact the admin 
         <a href="mailto:<%=@game.admin_email%>?Subject=Assassins_Game" 
