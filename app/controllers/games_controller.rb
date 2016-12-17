@@ -33,7 +33,7 @@ class GamesController < ApplicationController
             render 'new'
         else
             flash[:success] = "Game created successfully"
-            redirect_to game_path(@created_game)
+            redirect_to game_path(@created_game, key: @created_game.key)
         end
     end
 
