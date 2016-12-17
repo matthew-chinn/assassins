@@ -13,10 +13,11 @@
   <p><%= flash[:success] %></p>
   <p><%= flash[:notice] %></p>
 </div>
-<% elsif flash[:danger] or flash[:alert] %>
+<% elsif flash[:danger] or flash[:alert] or flash[:error] %>
 <div class="flash danger">
   <p><%= flash[:danger] %></p>
   <p><%= flash[:alert] %></p>
+  <p><%= flash[:error] %></p>
 </div>
 <% end %>
 

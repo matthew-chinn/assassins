@@ -114,7 +114,9 @@ class GamesController < ApplicationController
             victim = Player.find(params[:player])
             killer = Player.find_by(target_id: victim.id)
 
-            killer.update_attributes(target_id: victim.target_id) #assign killer their target
+            if killer
+                killer.update_attributes(target_id: victim.target_id) #assign killer their target
+            end
             victim.update_attributes(alive: false, deaths: victim.deaths + 1, target_id: nil)
         elsif action == "kill"
             killer = Player.find(params[:player])
@@ -139,6 +141,13 @@ class GamesController < ApplicationController
         alive_only = params[:alive_only]
         msg = params[:message]
         include_assignment = params[:include_assignment]
+        res = Alerter.send_alerts(@game, alive_only, msg, include_assignment)
+        if res
+            flash[:success] = "Sent alerts successfully"
+        else
+            flash[:error] = "Error sending alerts"
+        end
+        redirect_to action: 'create_alerts', id: @game.id, key: @key
     end
 
     private
@@ -168,6 +177,7 @@ class GamesController < ApplicationController
 
         return players 
     end
+
 
     def check_admin
         if not params[:key]

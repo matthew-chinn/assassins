@@ -22,8 +22,12 @@ families = {"Alpha" => alpha,
 
 families.each do |family, people|
     t = Team.create(name: family, game_id: game.id)
-    people.each do |person|
-        Player.create(name: person, team_id: t.id, team: t, contact: "7dilbertnerd@gmail.com", phone: false)
+    people.each_with_index do |person, i|
+        if i % 2 == 0
+            Player.create(name: person, team_id: t.id, team: t, contact: "7dilbertnerd@gmail.com", phone: false)
+        else
+            Player.create(name: person, team_id: t.id, team: t, contact: "714-875-3219", phone: true)
+        end
     end
 end
 
