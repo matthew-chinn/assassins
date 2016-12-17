@@ -141,11 +141,16 @@ class GamesController < ApplicationController
         alive_only = params[:alive_only]
         msg = params[:message]
         include_assignment = params[:include_assignment]
-        res = Alerter.send_alerts(@game, alive_only, msg, include_assignment)
-        if res
+        #list of players that did not get sent updates
+        unsuccessful = Alerter.send_alerts(@game, alive_only, msg, include_assignment)
+        if unsuccessful = nil or unsuccessful.count == 0
             flash[:success] = "Sent alerts successfully"
         else
-            flash[:error] = "Error sending alerts"
+            str = ""
+            unsuccessful.each do |p|
+                str += " #{p.name}," 
+            end
+            flash[:error] = "Error sending alerts to #{str}"
         end
         redirect_to action: 'create_alerts', id: @game.id, key: @key
     end

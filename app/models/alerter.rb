@@ -3,6 +3,7 @@ class Alerter
         teams_hash = game.teams_hash(alive_only)
         #list of people didnt send alert to
         unsuccessful = send_alerts_helper(teams_hash, msg, include_assignment, game)
+        return unsuccessful
     end
 
     private
