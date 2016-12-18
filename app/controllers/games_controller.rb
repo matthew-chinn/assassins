@@ -40,6 +40,23 @@ class GamesController < ApplicationController
     def show
         @game = Game.find(params[:id])
         @teams = @game.teams
+
+        #leaderboard
+        @leaders = []
+        str = ""
+        @teams.each do |team|
+            players = Player.where("team_id = ? AND kills > ?
+                                   AND alive = ?",
+                                 team.id, 0, true)
+            if players.count > 0
+                @leaders += players.all
+            end
+        end
+        if @leaders.count > 1
+            @leaders = @leaders.sort! { |x,y| y.kills <=> x.kills }
+            @leaders = @leaders.take(5)
+        end
+
     end
 
     def index

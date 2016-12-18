@@ -16,11 +16,37 @@
     </p>
 <% end %>
 
+<% if @leaders and @leaders.count > 0 %>
+<div class="leaderboard">
+    <h3>Leaderboard</h3>
+    <table> 
+        <tr>
+            <th>Team</th>
+            <th>Player</th>
+            <th>Kills</th>
+        </tr>
+
+        <% @leaders.each do |leader| %>
+            <% team_name = Team.find(leader.team_id).name %>
+            <div class="<%= team_name %>">
+                <tr>
+                    <td><%= team_name %></td>
+                    <td><%= leader.name %></td>
+                    <td><%= leader.kills %></td>
+                </tr>
+            </div>
+        <% end %>
+    </table>
+</div>
+<% end %>
+
 <div class="players">
     <% @teams.each do |team| %>
         <table class="<%= team.name %>">
             <tr>
                 <th><%= team.name %></th>
+                <th>Total Kills: <%= team.total_kills %></th>
+                <th>Total Remaining: <%= team.total_remaining%></th>
             </tr>
 
             <tr>
