@@ -45,10 +45,10 @@ class GameTest < ActiveSupport::TestCase
         assert check_targets(teams_hash)
     end
 
-    test "Game.assign_targets 2 teams, different players each" do
+    test "Game.assign_targets 2 teams, uneven players each" do
         g = Game.create(title: "title", key: "123")
         team_names = [ "A", "B" ]
-        player_counts = [2, 1]
+        player_counts = [2, 10]
         teams_hash = {}
 
         team_names.each_with_index do |name, i|
@@ -64,6 +64,7 @@ class GameTest < ActiveSupport::TestCase
         end
 
         assert g.assign_targets
+        #print_hash(teams_hash)
         #dont check team condition because may assign team to itself when teams
         #are uneven
         assert check_targets(teams_hash, false)
@@ -196,7 +197,8 @@ class GameTest < ActiveSupport::TestCase
         team_hash.keys.each do |k|
             team_hash[k].each do |p|
                 p.reload
-                puts "Player: #{p.name} #{p.target_id} #{p.alive}"
+                targ = Player.find(p.target_id)
+                puts "Player: #{p.name} #{targ.name} #{p.alive}"
             end
         end
     end

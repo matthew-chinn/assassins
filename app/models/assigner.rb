@@ -63,10 +63,12 @@ class Assigner
             @players_to_reassign.each do |player|
                 res = reassign_player(player)
                 if not res
-                    #reassignment is unsuccessful
-                    player.target_id = nil
+                    #reassignment is unsuccessful, try again without team
+                    #restriction
+                    reassign_player(player, false)
                 end
             end
+
         end
 
         save_players(@players)
@@ -155,6 +157,7 @@ class Assigner
             return true
         end
         
+        @team_to_curr_index[team] = @team_to_curr_index[team] + 1
         return false
     end
 
@@ -197,7 +200,6 @@ class Assigner
             return true
         end
 
-        puts "REASSIGNING: #{player_to_assign.name}"
         #if hasnt been assigned, then that means only unassigned player left is
         #this current player_to_assign, switch with anyone
         @players.each do |player|
@@ -213,7 +215,30 @@ class Assigner
     end
 
     #in team games, match this player to a valid target
-    def self.reassign_player(player)
+    #if team is true, then only reassign to players of other teams
+    #if team is false, then allow reassignments to players of same team
+    def self.reassign_player(player, team = true)
+        if not team #assign to anyone that isnt the player themself
+            @available_people.each do |potential_target|
+                if potential_target != player
+                    player.target_id = potential_target.id
+                    @available_people.delete(potential_target)
+                    return true
+                end
+            end
+
+            #if the only available person is the same player themself
+            #switch with anyone else
+            @players.each do |other|
+                if not other.alive or player == other
+                    next
+                end
+                player.target_id = other.target_id
+                other.target_id = @available_people.first.id
+                return true
+            end
+        end
+
         player_team = Team.find(player.team_id)
         @players.each do |other_player| #someone whose target we will take
             next if !other_player.alive
@@ -228,7 +253,7 @@ class Assigner
 
             @available_people.each do |potential_target|
                 target_team = Team.find(potential_target.team_id)
-                next if other_team == target_team
+                next if other_team == target_team 
                 player.update_attribute(:target_id, other_player.target_id)
                 other_player.update_attribute(:target_id, potential_target.id)
                 return true
