@@ -145,6 +145,11 @@ class GamesController < ApplicationController
         elsif action == "revive"
             player = Player.find(params[:player])
             player.update_attribute(:alive, true)
+        elsif action == "revive_all"
+            teams = game.teams
+            teams.each do |team|
+               Player.where(team_id: team.id, alive: false).update_all(alive: true)
+            end
         end
         redirect_to action: 'show', id: game.id, key: @key
     end

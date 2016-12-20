@@ -117,6 +117,12 @@
             id: "assign-targets-btn" %>
     </div>
 
+    <div class="revive-all">
+        <%= link_to "Revive all players", life_path(
+            id: @game.id, key: @key, 
+            act: "revive_all"), method: :post %>
+    </div>
+
     <div class="alert-targets">
         <%= link_to "Send notification", create_alerts_path(id: @game.id, key: @key), class: "btn", 
             id: "assign-targets-btn" %>
