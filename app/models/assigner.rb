@@ -1,16 +1,38 @@
 #helper class to assign targets
 class Assigner
     #team_hash: Team model object => it's players that need to be assigned
-    #Algorithm:
+    #type: "team" or "free, depending on if free for all or team
+    #Algorithm for team assignments:
     #Create array of players, ordered by team
     #Select team with highest number of players to be assigned
     #Randomly assign them to a player who hasn't been assigned yet
     #If there are no players left that haven't been assigned
     #Reassign people until works
-    def self.assign_targets(team_hash)
+    def self.assign_targets(team_hash, type)
         require 'priority_queue'
         @queue = PriorityQueue.new
+        if type == "free"
+            return assign_targets_free(team_hash)
+        else
+            return assign_targets_team(team_hash)
+        end
+    end
 
+    def self.assign_targets_free(team_hash)
+        @players = [] #array of players to be assigned
+        team_hash.each do |team, players|
+            players.each do |player|
+                if player.alive
+                    @players << player
+                end
+            end
+        end
+        @assigned_indices = Set.new #set of indices of players already assigned
+
+        return assign_targets_free_helper
+    end
+
+    def self.assign_targets_team(team_hash)
         @players = [] #array of players to be assigned
         @assigned_indices = Set.new #set of indices of players already assigned
         @team_to_index = Hash.new #team to its index in array of players
@@ -28,7 +50,7 @@ class Assigner
         @team_to_curr_index = @team_to_index.clone 
         @players_to_reassign = [] #if failed to assign, try again
 
-        attempt_assignments
+        assign_targets_team_helper
 
         if @players_to_reassign.count > 0
             @available_people = []
@@ -83,12 +105,12 @@ class Assigner
     end
 
     #attempts to assign everyone, if unsuccessful, adds to @players_to_reassign
-    def self.attempt_assignments
+    def self.assign_targets_team_helper
         while @queue.count > 0 do
             team = @queue.min[0] #queue.min seems to return an array including value
             player_to_assign = @players[@team_to_curr_index[team]]                
 
-            assigned_successfully = attempt_to_assign_player(player_to_assign, team)
+            assigned_successfully = attempt_to_assign_player_team(player_to_assign, team)
             
             if not assigned_successfully #update count of players to be assigned
                 @players_to_reassign << player_to_assign
@@ -102,7 +124,7 @@ class Assigner
         end
     end
 
-    def self.attempt_to_assign_player(player_to_assign, team)
+    def self.attempt_to_assign_player_team(player_to_assign, team)
         #number of players available to assign to is equal to total 
         #number of players minus the number of players on this team
         potential_indices = (0...(@players.count - @team_to_count[team])).to_a
@@ -136,6 +158,61 @@ class Assigner
         return false
     end
 
+    def self.assign_targets_free_helper
+        @players.each_with_index do |player, i|
+            assign_player_free(player, i)
+        end
+
+        save_players(@players)
+        return true
+    end
+
+    #i is the index location of that player
+    def self.assign_player_free(player_to_assign, i)
+        #number of players available to assign 
+        potential_indices = (1...@players.count).to_a
+
+        #reorder indices randomly to act as random generator
+        #use instead of random generator to prevent duplicates
+        potential_indices = potential_indices.sample(potential_indices.count) 
+
+        #repeat until we have a good assignment or there are no people to be 
+        #assigned, may have to try reassigning
+        while potential_indices.count > 0 do
+            rand = potential_indices.pop
+
+            #move past the current team's indices, then add rand
+            index = (i + rand) % @players.count
+
+            if @assigned_indices.include? index || 
+               @players[index].target_id == player_to_assign.id
+                #try another index because this person has been assigned
+                #or that person's target is this player
+                next 
+            end
+
+            #the person is a valid assignment
+            player_to_assign.target_id = @players[index].id
+            @assigned_indices.add(index)                             
+            return true
+        end
+
+        puts "REASSIGNING: #{player_to_assign.name}"
+        #if hasnt been assigned, then that means only unassigned player left is
+        #this current player_to_assign, switch with anyone
+        @players.each do |player|
+            if player == player_to_assign
+                next
+            end
+            player_to_assign.target_id = player.target_id
+            player.target_id = player_to_assign.id
+            return true
+        end
+
+        return false #somehow couldnt assign player
+    end
+
+    #in team games, match this player to a valid target
     def self.reassign_player(player)
         player_team = Team.find(player.team_id)
         @players.each do |other_player| #someone whose target we will take

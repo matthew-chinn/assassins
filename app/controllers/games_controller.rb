@@ -112,11 +112,11 @@ class GamesController < ApplicationController
     def assign_targets
         @game = Game.find(params[:id])
         
-        teams = @game.assign_targets
+        teams = @game.assign_targets(params[:type])
         if not teams
             #if unsuccessful, redirect to show page
             flash[:danger] = "Error assigning targets"
-            redirect_to action: 'show', id: @game.id
+            redirect_to action: 'show', id: @game.id, key: @key
             return
         end
 

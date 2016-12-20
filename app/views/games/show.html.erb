@@ -113,8 +113,12 @@
     </div>
 
     <div class="assign-targets">
-        <%= link_to "Assign targets", assign_targets_path(id: @game.id, key: @key), method: :post, class: "btn", 
-            id: "assign-targets-btn" %>
+        <%= link_to "Assign targets (by team)", 
+            assign_targets_path(id: @game.id, key: @key, type: "team"), 
+            method: :post, class: "btn", id: "assign-targets-btn" %>
+        <%= link_to "Assign targets (free-for-all)", 
+            assign_targets_path(id: @game.id, key: @key, type: "free"), 
+            method: :post, class: "btn", id: "assign-targets-btn" %>
     </div>
 
     <div class="revive-all">

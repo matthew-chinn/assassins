@@ -8,20 +8,13 @@ class Game < ActiveRecord::Base
     #assign targets with the following algorithm:
     #
     #return teams_hash(alive) 
-    def assign_targets
+    def assign_targets(type = "team")
         res = {}
         #alive players
         team_hash = teams_hash(true)
         teams = team_hash.keys
 
-        team_counts = teams.map{ |team| team.players.count }
-        if not Game.possible_to_match_all?(team_counts)
-            #what to do here
-            #return {}
-            return false
-        end
-
-        return Assigner.assign_targets(team_hash)
+        return Assigner.assign_targets(team_hash, type)
     end
 
     #return hash of team to its players

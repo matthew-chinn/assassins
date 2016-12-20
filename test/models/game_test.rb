@@ -63,7 +63,10 @@ class GameTest < ActiveSupport::TestCase
             teams_hash[t] = players
         end
 
-        assert_not g.assign_targets
+        assert g.assign_targets
+        #dont check team condition because may assign team to itself when teams
+        #are uneven
+        assert check_targets(teams_hash, false)
     end
 
     test "Game.assign_targets 3 teams, 5 players each" do
@@ -130,9 +133,30 @@ class GameTest < ActiveSupport::TestCase
         assert check_targets(teams_hash)
     end
 
+    test "Game.assign_targets free_for_all" do
+        g = Game.create(title: "title", key: "123")
+        team_names = [ "A", "B"]
+        teams_hash = {}
+
+        team_names.each do |name|
+            t = Team.create(game_id: g.id, name: name)
+
+            players = []
+            (1..20).each do |x|
+                player = Player.create(name: "#{name}Player#{x}", team_id: t.id) 
+                players << player
+            end
+
+            teams_hash[t] = players
+        end
+
+        assert g.assign_targets("free")
+        assert check_targets(teams_hash, false)
+    end
+
     #make sure all players are assigned target id's and that their targets
     #are on different teams than their own and unique targets
-    def check_targets(teams_hash)
+    def check_targets(teams_hash, team_match = true)
         set = Set.new #id's of players that sholdnt be targets
         teams_hash.keys.each do |team|
             team.players.each do |player| #go through all players, including dead
@@ -151,7 +175,7 @@ class GameTest < ActiveSupport::TestCase
 
                 target = Player.find(player.target_id)
                 target_team = Team.find(target.team_id)
-                if target_team == team 
+                if target_team == team and team_match
                     puts "Incorrectly matched to same team" 
                     return false
                 end
