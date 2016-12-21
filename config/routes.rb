@@ -11,6 +11,10 @@ Rails.application.routes.draw do
    post 'games/:id/life-update' => 'games#life_update', as: :life
    get 'about' => 'pages#about', as: :about
    get 'games/:id/signup' => 'games#signup', as: :signup
+
+   get 'games/:id/edit-player/:player_id' => 'games#edit_player', as: :edit_player
+   patch 'games/:id/edit-player/:player_id' => 'games#save_edit_player', as: :save_edit_player
+
    post 'games/:id/add-player' => 'games#add_player', as: :add_player
    get 'games/:id/create-alerts' => 'games#create_alerts', as: :create_alerts
    post 'games/:id/create-alerts' => 'games#send_alerts', as: :send_alerts

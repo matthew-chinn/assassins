@@ -1,10 +1,12 @@
 class GamesController < ApplicationController
     before_action :check_admin, 
         only: [:show, :add_players, :assign_targets, 
-               :life_update, :create_alerts, :send_alerts]
+               :life_update, :create_alerts, :send_alerts, :edit_player,
+               :save_edit_player]
     before_action :redirect_nonadmin, 
         only: [:add_players, :assign_targets, 
-               :life_update, :create_alerts, :send_alerts]
+               :life_update, :create_alerts, :send_alerts, :edit_player,
+               :save_edit_player ]
     
     def new
         @new_game = Game.new
@@ -66,18 +68,42 @@ class GamesController < ApplicationController
     def signup
         @game = Game.find(params[:id])
         @player = Player.new
+        @title = "New Player"
+        @action = "Submit"
+        @url = add_player_path(@game)
+    end
+
+    def edit_player
+        @game = Game.find(params[:id])
+        @player = Player.find(params[:player_id])
+        @action = "Save"
+        @title = "Edit #{@player.name}"
+        @url = save_edit_player_path(id: @game.id, player_id: @player.id)
+        render 'signup'
+    end
+
+    def save_edit_player
+        @game = Game.find(params[:id])
+        p = Player.find(params[:player_id])
+        p.update_attributes(player_params)
+        redirect_to action: 'show', id: @game.id, key: @key
     end
 
     def add_player
         @game = Game.find(params[:id])
+
         @player = Player.create(player_params)
         if @player.errors.any?
             flash[:danger] = "Error creating player"
             render 'signup'
             return
         end
-        redirect_to action: 'show', id: @game.id
+
+        @player.update_attributes(player_params)
+        redirect_to action: 'show', id: @game.id, key: @key
     end
+
+    def 
 
     #add players to the game
     def add_players

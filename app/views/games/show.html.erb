@@ -61,7 +61,14 @@
 
             <% team.players.each do |person| %>
                 <tr>
-                    <td><%= person.name %></td>
+                    <% if @admin %>
+                        <td><%= link_to person.name, 
+                            edit_player_path(id: @game.id, player_id: person.id, edit: true, key: @key) %>
+                        </td>
+                    <% else %>
+                        <td><%= person.name %></td>
+                    <% end %>
+
                     <td><%= person.alive %></td>
                     <td><%= person.kills %></td>
                     <% if @admin %>
