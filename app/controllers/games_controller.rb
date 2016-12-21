@@ -103,8 +103,6 @@ class GamesController < ApplicationController
         redirect_to action: 'show', id: @game.id, key: @key
     end
 
-    def 
-
     #add players to the game
     def add_players
         @game = Game.find(params[:id])
