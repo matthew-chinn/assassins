@@ -1,13 +1,23 @@
-<% if not @games or @games.count == 0 %>
-    <p>
-        No games created yet. Make one now 
-        <%= link_to "here!", new_game_path, class: "create btn" %>
-    </p>
-<% else %>
-    <ul>
-    <% @games.each do |game| %>
-        <li><%= link_to "#{game.title}: #{game.description}",
-                game_path(game) %></li>
+<h1>Games</h1>
+<div class="index container">
+    <% if not @games or @games.count == 0 %>
+        <p>
+            No games created yet. Make one now 
+            <%= link_to "here!", new_game_path, class: "create btn" %>
+        </p>
+    <% else %>
+        <table>
+            <tr>
+                <th>Game</th>
+                <th>Last updated</th>
+            </tr>
+        <% @games.each do |game| %>
+            <tr>
+            <td><%= link_to "#{game.title}: #{game.description}",
+                    game_path(game) %></td>
+            <td><%= game.updated_at.strftime("%m/%d/%Y") %></td>
+            </tr>
+        <% end %>
+        </table>
     <% end %>
-    </ul>
-<% end %>
+</div>

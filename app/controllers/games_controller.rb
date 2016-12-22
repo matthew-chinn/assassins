@@ -9,6 +9,7 @@ class GamesController < ApplicationController
                :save_edit_player ]
     
     def new
+        @title = "Create Assassins Game"
         @new_game = Game.new
     end
 
@@ -42,6 +43,7 @@ class GamesController < ApplicationController
     def show
         @game = Game.find(params[:id])
         @teams = @game.teams
+        @title = "Assassins: #{@game.title}"
 
         #leaderboard
         @leaders = []
@@ -67,6 +69,7 @@ class GamesController < ApplicationController
 
     def signup
         @game = Game.find(params[:id])
+        @title = "Assassins: Signup"
         @player = Player.new
         @title = "New Player"
         @action = "Submit"

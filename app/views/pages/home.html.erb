@@ -1,6 +1,29 @@
+<h1>Welcome to Team Assassins</h1>
+<div class="description container">
+    <p>
+    Hi! This website is for people to help administrate a game of Assassins.
+    It will handle doing things like assigning targets, sending notifications 
+    to players of their targets, and handling the scorekeeping. 
+    </p>
+
+    <p>
+    If you are the admin for a game, enter your key to access your game. If you
+    are just visiting, feel free to view current games.
+    </p>
+
+    <p>
+    Although intended for team games, you can also play free-for-all games by 
+    making just one team and then click on "Assign targets (free-for-all)".
+    </p>
+
+    <p>
+    Have fun!
+    </p>
+</div>
+
 <div class="action container">
     <%= link_to "Create game", new_game_path, class: "create btn" %>
-    <%= link_to "View games", games_path, class: "btn" %>
+    <%= link_to "View games", games_path, class: "view btn" %>
     <%= form_tag("/redirect-to-game", method: "post") do %>
         <%= label_tag(:key, "Insert admin key here") %>
         <%= text_field_tag :key %>

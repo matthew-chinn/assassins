@@ -1,6 +1,12 @@
 TODO:
 
 style
+-signup/edit player page
+-send notif
+-create game
+-about
+-mobile
+
 
 merge two games
 

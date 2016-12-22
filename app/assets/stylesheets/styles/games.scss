@@ -1,0 +1,75 @@
+// Place all the styles related to the game controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+div.index table{
+    margin: 0 auto;
+}
+
+div.leaderboard.container{
+    h3{
+        margin: 0;
+        font-size: 20px;
+        text-align: center;
+    }
+
+    //width: initial;
+    table{
+        margin: 0 auto;
+    }
+    text-align: center;
+}
+
+div.players{
+    text-align: center;
+    div.container{
+
+        &.non-admin{
+            width: 400px;
+        }
+        &.admin{
+            @media(min-device-width: 500px) and (min-width: 500px){
+                width: 500px;
+            }
+        }
+
+
+        display: inline-block;
+        text-align: center;
+        vertical-align: top;
+
+        table{
+            margin: 10px auto;
+        }
+    }
+}
+
+div.show.container{
+    text-align: center;
+}
+
+div.container.admin{
+    width: 80%;
+    text-align: center;
+    div{
+        margin: 25px 0;
+        display: inline-block;
+    }
+
+    div#add-form{
+        display: none;
+        margin: 0 0 10px 0;
+        h4{
+            margin: 0;
+        }
+
+        .input-row{
+            margin: 0;
+            display: block;
+
+            textarea{
+                height: 15px;
+            }
+        }
+    }
+}

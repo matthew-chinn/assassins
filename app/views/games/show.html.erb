@@ -1,23 +1,74 @@
 <h1><%= @game.title %></h1>
-<p><%= @game.description %></p>
+<div class="show container">
+    <p><%= @game.description %></p>
 
-<% if not @admin %>
-    <%= form_tag("/redirect-to-game", method: "post") do %>
-        <%= label_tag(:key, "Insert admin key here") %>
-        <%= text_field_tag :key %>
-        <%= submit_tag("Submit", class:"btn submit") %>
+    <% if not @admin %>
+        <%= form_tag("/redirect-to-game", method: "post") do %>
+            <%= label_tag(:key, "Insert admin key here") %>
+            <%= text_field_tag :key %>
+            <%= submit_tag("Submit", class:"btn submit") %>
+        <% end %>
     <% end %>
-<% end %>
 
-<% if @game.admin_email %>
-    <p>If you would like to join the game, please contact the admin 
-        <a href="mailto:<%=@game.admin_email%>?Subject=Assassins_Game" 
-           target="_top">here</a>
-    </p>
+    <% if @game.admin_email %>
+        <p>If you would like to join the game, please contact the admin 
+            <a href="mailto:<%=@game.admin_email%>?Subject=Assassins_Game" 
+               target="_top">here</a>
+        </p>
+    <% end %>
+</div>
+
+<% if @admin %>
+    <div class="container admin">
+        <div class="signup">
+            <%= link_to "Signup link", signup_path(@game), class: "btn" %>
+        </div>
+
+        <div class="add-players">
+            <a id="add-btn" class="btn">Add players</a>
+        </div>
+
+        <div class="assign-targets-team">
+            <%= link_to "Assign targets (by team)", 
+                assign_targets_path(id: @game.id, key: @key, type: "team"), 
+                method: :post, class: "btn", id: "assign-targets-btn" %>
+        </div>
+
+        <div class="assign-targets-free">
+            <%= link_to "Assign targets (free-for-all)", 
+                assign_targets_path(id: @game.id, key: @key, type: "free"), 
+                method: :post, class: "btn", id: "assign-targets-btn" %>
+        </div>
+
+        <div class="revive-all">
+            <%= link_to "Revive all players", life_path(
+                id: @game.id, key: @key, 
+                act: "revive_all"), method: :post, class: "btn" %>
+        </div>
+
+        <div class="alert-targets">
+            <%= link_to "Send notification", create_alerts_path(id: @game.id, key: @key), class: "btn", 
+                id: "assign-targets-btn" %>
+        </div>
+
+        <div id="add-form">
+            <h4>Add names separated by a comma</h4>
+            <%= form_tag("/games/#{@game.id}/add-players", method: "post") do %>
+                <% @game.teams.each do |team| %>
+                    <div class="input-row">
+                        <%= label_tag(team.name.to_sym, "#{team.name}") %>
+                        <%= text_area_tag team.name.to_sym %>
+                    </div>
+                <% end %>
+                <%= hidden_field_tag :key, @key %>
+                <%= submit_tag("Submit", class:"btn submit") %>
+            <% end %>
+        </div>
+    </div>
 <% end %>
 
 <% if @leaders and @leaders.count > 0 %>
-<div class="leaderboard">
+<div class="leaderboard container">
     <h3>Leaderboard</h3>
     <table> 
         <tr>
@@ -28,13 +79,11 @@
 
         <% @leaders.each do |leader| %>
             <% team_name = Team.find(leader.team_id).name %>
-            <div class="<%= team_name %>">
-                <tr>
-                    <td><%= team_name %></td>
-                    <td><%= leader.name %></td>
-                    <td><%= leader.kills %></td>
-                </tr>
-            </div>
+            <tr >
+                <td class="<%= team_name %>"><%= team_name %></td>
+                <td><%= leader.name %></td>
+                <td><%= leader.kills %></td>
+            </tr>
         <% end %>
     </table>
 </div>
@@ -42,100 +91,63 @@
 
 <div class="players">
     <% @teams.each do |team| %>
-        <table class="<%= team.name %>">
-            <tr>
-                <th><%= team.name %></th>
-                <th>Total Kills: <%= team.total_kills %></th>
-                <th>Total Remaining: <%= team.total_remaining%></th>
-            </tr>
-
-            <tr>
-                <td>Player</td>
-                <td>Alive</td>
-                <td>Kills</td>
-                <% if @admin %>
-                    <td>Target</td>
-                    <td>Life</td>
-                <% end %>
-            </tr>
-
-            <% team.players.each do |person| %>
+        <div class="container <%= @admin ? "admin" : "non-admin" %>">
+            <table>
                 <tr>
-                    <% if @admin %>
-                        <td><%= link_to person.name, 
-                            edit_player_path(id: @game.id, player_id: person.id, edit: true, key: @key) %>
-                        </td>
-                    <% else %>
-                        <td><%= person.name %></td>
-                    <% end %>
+                    <h3 class="<%= team.name %>"><%= team.name %> |
+                    Total Kills: <%= team.total_kills %> |
+                    Total Remaining: <%= team.total_remaining%></h3>
+                </tr>
 
-                    <td><%= person.alive %></td>
-                    <td><%= person.kills %></td>
+                <tr>
+                    <td>Player</td>
+                    <td>Alive</td>
+                    <td>Kills</td>
                     <% if @admin %>
-                        <% if person.target_id == nil or !person.alive %>
-                            <td>---</td>
-                        <% else %>
-                            <% p = Player.find_by(id: person.target_id) %>
-                            <td><%= p.name if p %> <%= '---' if not p %></td>
-                        <% end %>
-                        <td>
-                        <% if person.alive %>
-                            <%= (link_to "Killed Target", life_path(
-                                id: @game.id, player: person.id, key: @key, 
-                                act: "kill"), method: :post) if p and p != person %>
-                            <%= link_to "Suicide", life_path(
-                                id: @game.id, player: person.id, key: @key, 
-                                act: "suicide"), method: :post %>
-                        <% else %>
-                            <%= link_to "Revive", life_path(
-                                id: @game.id, player: person.id, key: @key, 
-                                act: "revive"), method: :post %>
-                        <% end %>
+                        <td>Target</td>
+                        <td>Life</td>
                     <% end %>
                 </tr>
-            <% end %>
-        </table>
+
+                <% team.players.each do |person| %>
+                    <tr>
+                        <% if @admin %>
+                            <td><%= link_to person.name, 
+                                edit_player_path(id: @game.id, player_id: person.id,
+                                                 edit: true, key: @key) %>
+                            </td>
+                        <% else %>
+                            <td><%= person.name %></td>
+                        <% end %>
+
+                        <td><% if person.alive %>&#10004;<% end %></td>
+                        <td><%= person.kills %></td>
+                        <% if @admin %>
+                            <% if person.target_id == nil or !person.alive %>
+                                <td>---</td>
+                            <% else %>
+                                <% p = Player.find_by(id: person.target_id) %>
+                                <td><%= p.name if p %> <%= '---' if not p %></td>
+                            <% end %>
+                            <td>
+                            <% if person.alive %>
+                                <%= (link_to "Killed Target |", life_path(
+                                    id: @game.id, player: person.id, key: @key, 
+                                    act: "kill"), method: :post) if p and p != person %>
+                                
+                                <%= link_to "Suicide", life_path(
+                                    id: @game.id, player: person.id, key: @key, 
+                                    act: "suicide"), method: :post %>
+                            <% else %>
+                                <%= link_to "Revive", life_path(
+                                    id: @game.id, player: person.id, key: @key, 
+                                    act: "revive"), method: :post %>
+                            <% end %>
+                        <% end %>
+                    </tr>
+                <% end %>
+            </table>
+        </div>
     <% end %>
 </div>
 
-<% if @admin %>
-    <div class="signup">
-        <%= link_to "Signup link", signup_path(@game) %>
-    </div>
-
-    <div class="add-players">
-        <a id="add-btn" class="btn">Add players</a>
-        <div id="add-form">
-            <div class="form">
-                <%= form_tag("/games/#{@game.id}/add-players", method: "post") do %>
-                    <% @game.teams.each do |team| %>
-                        <%= label_tag(team.name.to_sym, "Add #{team.name} names separated by a comma") %>
-                        <%= text_area_tag team.name.to_sym %>
-                    <% end %>
-                    <%= hidden_field_tag :key, @key %>
-                    <%= submit_tag("Submit", class:"btn submit") %>
-                <% end %>
-            </div>
-        </div>
-    </div>
-
-    <div class="assign-targets">
-        <%= link_to "Assign targets (by team)", 
-            assign_targets_path(id: @game.id, key: @key, type: "team"), 
-            method: :post, class: "btn", id: "assign-targets-btn" %>
-        <%= link_to "Assign targets (free-for-all)", 
-            assign_targets_path(id: @game.id, key: @key, type: "free"), 
-            method: :post, class: "btn", id: "assign-targets-btn" %>
-    </div>
-
-    <div class="revive-all">
-        <%= link_to "Revive all players", life_path(
-            id: @game.id, key: @key, 
-            act: "revive_all"), method: :post %>
-    </div>
-
-    <div class="alert-targets">
-        <%= link_to "Send notification", create_alerts_path(id: @game.id, key: @key), class: "btn", 
-            id: "assign-targets-btn" %>
-    </div>
-<% end %>

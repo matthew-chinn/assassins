@@ -1,0 +1,119 @@
+@import "components/colors";
+@import url(https://fonts.googleapis.com/css?family=Slabo+27px);
+
+body{
+    @media only screen and (max-device-width: 480px){
+        font-size: 3em;
+    }
+
+    background-color: $background-color;
+    font-family: 'Slabo 27px', serif;    
+    margin: 0;
+    color: $main1;
+
+    a{
+        text-decoration: none;
+        cursor: pointer;
+
+        &:hover{
+            color: $main2;
+        }
+
+        &.btn{
+            padding: 10px;
+            background-color: $accent1;
+            color: $white;
+            border-radius: 10%;
+
+            &:hover{
+                background-color: $accent2;
+                color: $main1;
+            }
+        }
+
+    }
+
+    h1{
+        text-align: center;
+    }
+
+    div.container{
+        margin: 0 auto;
+        @media (max-width: 1000px){
+            width: 80%;
+        }
+        @media (min-width: 1000px){
+            width: 800px;
+        }
+    }
+
+    th{
+        font-size: 20px;
+    }
+}
+
+$footer-height: 20px;
+.footer-buffer{
+    display:block;
+    bottom: 0px;
+    height: $footer-height;
+}
+
+.footer{
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    text-align: center;
+    background-color: $main1;
+    height: $footer-height;    
+
+    a{
+        color: $white;
+        padding: 0px 10px;
+    }
+}
+
+.flash{
+    top: 0px;
+    height: 50px;
+    width: 100%;
+    margin: 0;
+    text-align: center;
+
+    p{
+        text-align: center;
+        padding-top: 10px;
+        margin: 0;
+        font-size: 20px;
+        color: $white;
+    }
+
+    &.success{
+        background-color: $success;
+    }
+
+    &.danger{
+        background-color: $failure;
+    }
+}
+
+//For APO colors
+.alpha, .Alpha{
+    color: $alpha;
+}
+
+.phi, .Phi{
+    color: $phi;
+}
+
+.omega, .Omega{
+    color: $omega;
+}
+
+.rho, .Rho{
+    color: $rho;
+}
+
+.pi, .Pi{
+    color: $pi;
+}
