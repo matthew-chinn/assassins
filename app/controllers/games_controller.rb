@@ -196,7 +196,7 @@ class GamesController < ApplicationController
         include_assignment = params[:include_assignment]
         #list of players that did not get sent updates
         unsuccessful = Alerter.send_alerts(@game, alive_only, msg, include_assignment)
-        if unsuccessful = nil or unsuccessful.count == 0
+        if unsuccessful == nil or unsuccessful.count == 0
             flash[:success] = "Sent alerts successfully"
         else
             str = ""
