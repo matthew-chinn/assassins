@@ -1,4 +1,5 @@
 TODO:
+Emails dont work anymore, probably some kind of smtp settings?
 
 style
 -mobile
