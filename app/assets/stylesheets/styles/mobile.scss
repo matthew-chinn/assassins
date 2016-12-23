@@ -1,17 +1,5 @@
 body{
     @media only screen and (max-device-width: 480px){
         font-size: 3em;
-
-        $footer-height: 2em;
-        .footer-buffer{
-            height: $footer-height;
-        }
-        .footer{
-            height: $footer-height;
-            a{
-                vertical-align: -webkit-baseline-middle;
-                height: $footer-height;
-            }
-        }
     }
 }

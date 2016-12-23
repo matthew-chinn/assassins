@@ -13,7 +13,7 @@
             </tr>
         <% @games.each do |game| %>
             <tr>
-            <td><%= link_to "#{game.title}: #{game.description}",
+            <td><%= link_to "#{game.title}",
                     game_path(game) %></td>
             <td><%= game.updated_at.strftime("%m/%d/%Y") %></td>
             </tr>

@@ -73,3 +73,21 @@ div.container.admin{
         }
     }
 }
+
+.admin-key{
+    &.input, &.submit{
+        width: initial;
+        display: table-row;
+    }
+}
+
+.inline-block{
+    text-align: center;
+    *{
+        display: inline-block;
+    }
+
+    input{
+        width: initial;
+    }
+}

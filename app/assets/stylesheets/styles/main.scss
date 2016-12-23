@@ -10,49 +10,76 @@ body{
     font-family: 'Slabo 27px', serif;    
     margin: 0;
     color: $main1;
+}
 
-    a{
-        text-decoration: none;
-        cursor: pointer;
+a{
+    text-decoration: none;
+    cursor: pointer;
 
-        &:hover{
-            color: $main2;
-        }
-
-        &.btn{
-            padding: 10px;
-            background-color: $accent1;
-            color: $white;
-            border-radius: 10%;
-
-            &:hover{
-                background-color: $accent2;
-                color: $main1;
-            }
-        }
-
-    }
-
-    h1{
-        text-align: center;
-    }
-
-    div.container{
-        margin: 0 auto;
-        @media (max-width: 1000px){
-            width: 80%;
-        }
-        @media (min-width: 1000px){
-            width: 800px;
-        }
-    }
-
-    th{
-        font-size: 20px;
+    &:hover{
+        color: $main2;
     }
 }
 
-$footer-height: 20px;
+.btn{
+    padding: 10px;
+    background-color: $accent1;
+    color: $white;
+    border-radius: 10%;
+    cursor: pointer;
+    border: none;
+
+    &:hover{
+        background-color: $accent2;
+        color: $main1;
+    }
+
+    &.submit{
+        position: relative;
+        top: 10px;
+    }
+}
+
+h1{
+    text-align: center;
+}
+
+div.container{
+    margin: 0 auto;
+    @media (max-width: 1000px){
+        width: 80%;
+    }
+    @media (min-width: 1000px){
+        width: 800px;
+    }
+}
+
+th{
+    font-size: 20px;
+}
+
+form{
+    $form-width: 500px;
+    $form-padding: 5px;
+
+    input, textarea{
+        display: block;
+        @media (min-width: 650px){
+            width: $form-width;
+        }
+        @media (max-width: 650px){
+            width: 100%;
+        }
+        padding: $form-padding;
+        margin: 10px auto;
+        border-radius: 5px;
+        border: 1px solid black;
+        font-size: 15px;
+    }
+
+}
+
+$footer-height: 2em;
 .footer-buffer{
     display:block;
     bottom: 0px;
@@ -70,6 +97,8 @@ $footer-height: 20px;
     a{
         color: $white;
         padding: 0px 10px;
+        vertical-align: -webkit-baseline-middle;
+        height: $footer-height;
     }
 }
 

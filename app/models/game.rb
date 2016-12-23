@@ -4,7 +4,6 @@ class Game < ActiveRecord::Base
     validates :title, presence: true
     validates :key , presence: true
 
-
     #assign targets with the following algorithm:
     #
     #return teams_hash(alive) 
@@ -31,6 +30,10 @@ class Game < ActiveRecord::Base
             end
         end
         return res
+    end
+
+    def update_time
+        self.update_attribute(:updated_at, Time.now)
     end
 
     private

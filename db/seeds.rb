@@ -6,7 +6,7 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-game = Game.create(title: "Sample", description: "Test out application", key: "123", admin_email: "chinnymasta@gmail.com")
+game = Game.create(title: "Sample", description: "Test out application. Admin key: 123", key: "123", admin_email: "chinnymasta@gmail.com")
 
 alpha = [ "Matthew", "Brandon", "William", "Brad", "Byung" ]
 phi = ["Sean", "Evan", "Grant"]

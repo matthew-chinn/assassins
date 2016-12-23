@@ -3,11 +3,7 @@
     <p><%= @game.description %></p>
 
     <% if not @admin %>
-        <%= form_tag("/redirect-to-game", method: "post") do %>
-            <%= label_tag(:key, "Insert admin key here") %>
-            <%= text_field_tag :key %>
-            <%= submit_tag("Submit", class:"btn submit") %>
-        <% end %>
+        <%= render template: 'games/_admin_key_form.html.erb' %>
     <% end %>
 
     <% if @game.admin_email %>

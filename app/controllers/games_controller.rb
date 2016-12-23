@@ -9,7 +9,7 @@ class GamesController < ApplicationController
                :save_edit_player ]
     
     def new
-        @title = "Create Assassins Game"
+        @title = "Create Game"
         @new_game = Game.new
     end
 
@@ -43,7 +43,7 @@ class GamesController < ApplicationController
     def show
         @game = Game.find(params[:id])
         @teams = @game.teams
-        @title = "Assassins: #{@game.title}"
+        @title = "#{@game.title}"
 
         #leaderboard
         @leaders = []
@@ -65,11 +65,11 @@ class GamesController < ApplicationController
 
     def index
         @games = Game.all
+        @title = "View Games"
     end
 
     def signup
         @game = Game.find(params[:id])
-        @title = "Assassins: Signup"
         @player = Player.new
         @title = "New Player"
         @action = "Submit"
@@ -89,6 +89,7 @@ class GamesController < ApplicationController
         @game = Game.find(params[:id])
         p = Player.find(params[:player_id])
         p.update_attributes(player_params)
+        @game.update_time
         redirect_to action: 'show', id: @game.id, key: @key
     end
 
@@ -102,7 +103,7 @@ class GamesController < ApplicationController
             return
         end
 
-        @player.update_attributes(player_params)
+        @game.update_time
         redirect_to action: 'show', id: @game.id, key: @key
     end
 
@@ -130,6 +131,7 @@ class GamesController < ApplicationController
             Player.transaction do
                 players.each(&:save!)
             end
+            @game.update_time
         end
 
         redirect_to action: 'show', id: @game.id, key: @key 
@@ -147,6 +149,7 @@ class GamesController < ApplicationController
             return
         end
 
+        @game.update_time
         redirect_to action: 'show', id: @game.id, key: @key
     end
 
@@ -178,6 +181,7 @@ class GamesController < ApplicationController
                Player.where(team_id: team.id, alive: false).update_all(alive: true)
             end
         end
+        @game.update_time
         redirect_to action: 'show', id: game.id, key: @key
     end
 
@@ -201,6 +205,7 @@ class GamesController < ApplicationController
             end
             flash[:error] = "Error sending alerts to #{str}"
         end
+        @game.update_time
         redirect_to action: 'create_alerts', id: @game.id, key: @key
     end
 
