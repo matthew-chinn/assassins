@@ -53,7 +53,7 @@
                 <% @game.teams.each do |team| %>
                     <div class="input-row">
                         <%= label_tag(team.name.to_sym, "#{team.name}") %>
-                        <%= text_area_tag team.name.to_sym %>
+                        <%= text_field_tag team.name.to_sym %>
                     </div>
                 <% end %>
                 <%= hidden_field_tag :key, @key %>

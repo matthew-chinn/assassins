@@ -1,4 +1,4 @@
-<%= form_tag("/redirect-to-game", method: "post") do %>
+<%= form_tag("/redirect-to-game", method: "post", class:"admin-key") do %>
     <%= text_field_tag :key, nil, placeholder: "Admin key", class:"admin-key input" %>
     <%= submit_tag("Submit", class:"btn submit admin-key") %>
 <% end %>

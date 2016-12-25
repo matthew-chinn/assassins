@@ -2,10 +2,6 @@
 @import url(https://fonts.googleapis.com/css?family=Slabo+27px);
 
 body{
-    @media only screen and (max-device-width: 480px){
-        font-size: 3em;
-    }
-
     background-color: $background-color;
     font-family: 'Slabo 27px', serif;    
     margin: 0;
