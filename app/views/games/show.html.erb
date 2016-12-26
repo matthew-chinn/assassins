@@ -98,7 +98,7 @@
                 <tr>
                     <td>Player</td>
                     <td>Alive</td>
-                    <td>Kills</td>
+                    <td class="desktop-only">Kills</td>
                     <% if @admin %>
                         <td>Target</td>
                         <td>Life</td>
@@ -117,7 +117,7 @@
                         <% end %>
 
                         <td><% if person.alive %>&#10004;<% end %></td>
-                        <td><%= person.kills %></td>
+                        <td class="desktop-only"><%= person.kills %></td>
                         <% if @admin %>
                             <% if person.target_id == nil or !person.alive %>
                                 <td>---</td>

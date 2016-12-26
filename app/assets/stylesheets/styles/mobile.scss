@@ -1,4 +1,8 @@
 @media only screen and (max-device-width: 480px){
+    .desktop-only{
+        display: none;
+    }
+
     body{
             font-size: 3em;
     }
@@ -24,8 +28,8 @@
         }
     }
 
-    form.new_player{
-        input{
+    form{
+        input, textarea{
             font-size: 1em;
             padding: 5px;
             width: 100%;
@@ -33,9 +37,10 @@
 
         input[type="checkbox"]{
             height: 1em;
+            width: 1em;
         }
 
-        input[type="select"]{
+        select{
             font-size: 1em;
             background-color: white;
         }
