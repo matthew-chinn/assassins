@@ -2,11 +2,11 @@ class GamesController < ApplicationController
     before_action :check_admin, 
         only: [:show, :add_players, :assign_targets, 
                :life_update, :create_alerts, :send_alerts, :edit_player,
-               :save_edit_player]
+               :save_edit_player, :merge_games]
     before_action :redirect_nonadmin, 
         only: [:add_players, :assign_targets, 
                :life_update, :create_alerts, :send_alerts, :edit_player,
-               :save_edit_player ]
+               :save_edit_player, :merge_games ]
     
     def new
         @title = "Create Game"
@@ -207,6 +207,19 @@ class GamesController < ApplicationController
         end
         @game.update_time
         redirect_to action: 'create_alerts', id: @game.id, key: @key
+    end
+
+    def merge_games
+        game = Game.find(params[:id])
+        other_game = Game.find_by(key: params[:other_key])
+        if not other_game
+            flash[:error] = "No game found with that key"
+            redirect_to action: 'show', id: game.id, key: @key
+            return
+        end
+        game.merge_with(other_game)
+        flash[:success] = "Merged successfully"
+        redirect_to action: 'show', id: game.id, key: @key
     end
 
     private

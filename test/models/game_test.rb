@@ -155,6 +155,42 @@ class GameTest < ActiveSupport::TestCase
         assert check_targets(teams_hash, false)
     end
 
+    test "merge games" do
+        g1 = Game.create(title: "g1", key: "1")
+        g2 = Game.create(title: "g2", key: "2")
+
+        merge1 = Team.create(game_id: g1.id, name: "TEAM")
+        p1 = Player.create(name: "p1", team_id: merge1.id)
+        merge2 = Team.create(game_id: g2.id, name: "TEAM")
+        p2 = Player.create(name: "p2", team_id: merge2.id)
+
+        nomerge1 = Team.create(game_id: g1.id, name: "nothing")
+        p3 = Player.create(name: "p3", team_id: nomerge1.id)
+        nomerge2 = Team.create(game_id: g2.id, name: "another")
+        p4 = Player.create(name: "p4", team_id: nomerge2.id)
+
+        g1.merge_with(g2)
+        g1.reload
+
+        #assert_not g2.reload #g2 has been destroyed, check that exception
+        #occurs
+        team_set = Set.new
+        g1.teams.each do |team|
+            team_set.add(team)
+        end
+        assert team_set.include?(merge1)
+        assert team_set.include?(nomerge1)
+        assert team_set.include?(nomerge2)
+
+        p1.reload
+        p2.reload
+        p3.reload
+        p4.reload
+        assert p1.team_id == p2.team_id
+        assert_not p3.team_id == p4.team_id
+    end
+
+    private
     #make sure all players are assigned target id's and that their targets
     #are on different teams than their own and unique targets
     def check_targets(teams_hash, team_match = true)

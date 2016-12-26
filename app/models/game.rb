@@ -36,6 +36,36 @@ class Game < ActiveRecord::Base
         self.update_attribute(:updated_at, Time.now)
     end
 
+    #merge games by changing the team id of players from the old game to 
+    #match the team in the current game with the same name
+    #If no team match, keep on their same team
+    #Also change team game_id to point to new game
+    def merge_with(game)
+        if game == self
+            return
+        end
+
+        name_to_team = {}
+        self.teams.each do |team|
+            name_to_team[team.name] = team
+        end
+
+        other_teams = game.teams
+        other_teams.each do |other_team|
+            #team name same in both 
+            if name_to_team[other_team.name]
+                new_team = name_to_team[other_team.name]
+                other_team.players.each do |player|
+                    player.update_attribute(:team_id, new_team.id)
+                end
+            #diff team name, update game id of old team
+            else
+                other_team.update_attribute(:game_id, self.id)
+            end
+        end
+        game.delete 
+    end
+
     private
     #returns if it is possible to match all teams using their counts
     #i.e. if team A has 10, team B has 3, and team C has 4, can't match all of A

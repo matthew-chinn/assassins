@@ -47,6 +47,10 @@
                 id: "assign-targets-btn" %>
         </div>
 
+        <div class="merge-games">
+            <a id="merge-games-btn" class="btn">Merge games</a>
+        </div>
+
         <div id="add-form">
             <h4>Add names separated by a comma</h4>
             <%= form_tag("/games/#{@game.id}/add-players", method: "post") do %>
@@ -58,6 +62,15 @@
                 <% end %>
                 <%= hidden_field_tag :key, @key %>
                 <%= submit_tag("Submit", class:"btn submit") %>
+            <% end %>
+        </div>
+
+        <div id="merge-game-form">
+            <h4>Enter the admin key of the game you'd like to merge</h4>
+            <%= form_tag(merge_games_path, method: "post", class:"admin-key") do %>
+                <%= text_field_tag :other_key, nil, placeholder: "Admin key", class:"admin-key input" %>
+                <%= hidden_field_tag :key, @key %>
+                <%= submit_tag("Submit", class:"btn submit admin-key") %>
             <% end %>
         </div>
     </div>
