@@ -1,8 +1,6 @@
 TODO:
 Emails dont work anymore, probably some kind of smtp settings?
 
-merge two games
-
 == README
 This project helps facilitate a game of Assassins for a team setting. Assassins
 is a game where everyone is assigned a target, and they must kill their target

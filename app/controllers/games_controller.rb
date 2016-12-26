@@ -234,7 +234,7 @@ class GamesController < ApplicationController
     def create_teams(text, game)
         toks = text.split(',')
         toks.each do |t|
-            game.teams << Team.create(name: t, game_id: game.id)
+            game.teams << Team.create(name: t.strip, game_id: game.id)
         end
     end
 
