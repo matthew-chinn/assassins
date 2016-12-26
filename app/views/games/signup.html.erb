@@ -3,9 +3,10 @@
     <%= form_for @player, url: @url do |f| %>
         <%= f.text_field :name, required: true, placeholder: "Name" %>
 
-        <%= f.text_field :contact, required: true, placeholder: "Email or phone (XXX-XXX-XXXX)" %>
+        <!-- right now only phone works -->
+        <%= f.text_field :contact, required: true, placeholder: "Phone Number (XXX-XXX-XXXX)" %>
 
-        <div class="inline-block">
+        <div class="inline-block" style="display: none;">
             <%= f.label :phone, "Check if phone number, Uncheck if email" %>
             <%= f.check_box :phone %>
         </div>
