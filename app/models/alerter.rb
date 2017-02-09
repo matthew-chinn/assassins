@@ -11,6 +11,11 @@ class Alerter
         unsuccessful = []
         teams_hash.each do |team, players|
             players.each do |player|
+                if not player.contact or player.contact.empty?
+                    unsuccessful << player
+                    next
+                end
+
                 msg = message.clone
                 if player.alive and include_assignment and player.target_id
                     target = Player.find(player.target_id)
@@ -40,7 +45,7 @@ class Alerter
         phone = Phonelib.parse player.contact
         num = phone.sanitized
 
-        msg += "\nDont reply to this. If you have questions, ask the admin"
+        msg += "\\nDont reply to this. If you have questions, ask the admin"
 
         cmd = "curl -X POST http://textbelt.com/text \ "
         cmd += "-d number=#{num}\ "
