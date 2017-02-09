@@ -1,5 +1,8 @@
 TODO:
 Emails dont work anymore, probably some kind of smtp settings?
+delete players
+edit admin email
+tutorial
 
 == README
 This project helps facilitate a game of Assassins for a team setting. Assassins
