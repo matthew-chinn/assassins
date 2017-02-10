@@ -96,6 +96,16 @@ class GamesController < ApplicationController
         render 'signup'
     end
 
+    def delete_player
+        @player = Player.find(params[:id])
+        if Player.exists?(target_id: @player.id)
+            p = Player.find_by(target_id: @player.id)
+            p.target_id = nil
+        end
+        @player.destroy
+        redirect_to game_path(params[:game_id])
+    end
+
     def save_edit_player
         @game = Game.find(params[:id])
         p = Player.find(params[:player_id])

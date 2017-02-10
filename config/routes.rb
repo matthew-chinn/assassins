@@ -20,6 +20,7 @@ Rails.application.routes.draw do
    post 'games/:id/create-alerts' => 'games#send_alerts', as: :send_alerts
    post 'games/:id/merge' => 'games#merge_games', as: :merge_games
 
+   delete 'player/:id' => 'games#delete_player', as: :delete_player
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
