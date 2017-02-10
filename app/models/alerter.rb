@@ -45,7 +45,7 @@ class Alerter
         phone = Phonelib.parse player.contact
         num = phone.sanitized
 
-        msg += "\\nDont reply to this. If you have questions, ask the admin"
+        msg += "\nDont reply to this. If you have questions, ask the admin"
 
         cmd = "curl -X POST http://textbelt.com/text \ "
         cmd += "-d number=#{num}\ "

@@ -42,10 +42,12 @@
                 act: "revive_all"), method: :post, class: "btn" %>
         </div>
 
+        <!-- texts dont work unless i pay for textbelt
         <div class="alert-targets">
-            <%= link_to "Send notification", create_alerts_path(id: @game.id, key: @key), class: "btn", 
+            <%# link_to "Send notification", create_alerts_path(id: @game.id, key: @key), class: "btn", 
                 id: "assign-targets-btn" %>
         </div>
+        -->
 
         <div class="merge-games">
             <a id="merge-games-btn" class="btn">Merge games</a>
