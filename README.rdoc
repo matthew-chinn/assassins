@@ -1,5 +1,6 @@
 TODO:
-Emails dont work anymore, probably some kind of smtp settings?
+admin message to game?
+give players keys to view their targets
 delete players
 edit admin email
 tutorial

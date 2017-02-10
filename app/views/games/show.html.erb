@@ -1,6 +1,6 @@
 <h1><%= @game.title %></h1>
 <div class="show container">
-    <p><%= @game.description %></p>
+    <p><%= simple_format(@game.description) %></p>
 
     <% if not @admin %>
         <%= render template: 'games/_admin_key_form.html.erb' %>
@@ -16,6 +16,11 @@
 
 <% if @admin %>
     <div class="container admin">
+        <div class="edit-game">
+            <%= link_to "Edit Game", edit_game_path(
+                id: @game.id, key: @key), class: "btn" %>
+        </div>
+
         <div class="signup">
             <%= link_to "Signup link", signup_path(@game), class: "btn" %>
         </div>

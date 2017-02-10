@@ -1,0 +1,23 @@
+<div class="container">
+    <h1>Edit Game</h1>
+    <%= form_for @game do |f| %>
+        <%= f.text_field :title, required: true, placeholder: "Title" %>
+        <%= f.text_field :admin_email, required: true, placeholder: "Email" %>
+        <%= f.text_area :description, placeholder: "Message" %>
+
+        <!-- right now only phone works (but not unless i pay for textbelt so disabled for now -->
+        <%# f.text_field :contact, placeholder: "Phone Number (XXX-XXX-XXXX)" %>
+
+        <!-- not used rn
+        <div class="inline-block" >
+            <%# f.label :phone, "Check if phone number, Uncheck if email" %>
+            <%# f.check_box :phone %>
+        </div>
+        -->
+
+
+        <%= hidden_field_tag :key, @key %>
+
+        <%= f.submit class:"btn submit" %>
+    <% end %>
+</div>

@@ -13,6 +13,17 @@ class GamesController < ApplicationController
         @new_game = Game.new
     end
 
+    def edit
+        @key = params[:key]
+        @game = Game.find(params[:id])
+    end
+
+    def update
+        @game = Game.find(params[:id])
+        @game.update!(game_params)
+        redirect_to game_path(id: params[:id], key: params[:key])
+    end
+
     def create
         key = params[:game][:key]
         g = Game.find_by(key: key)
@@ -224,7 +235,7 @@ class GamesController < ApplicationController
 
     private
     def game_params 
-        params.require(:game).permit(:title, :description, :key)
+        params.require(:game).permit(:title, :description, :key, :admin_email)
     end
 
     def player_params 
