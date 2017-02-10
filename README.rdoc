@@ -1,5 +1,4 @@
 TODO:
-give players keys to view their targets
 tutorial
 
 == README

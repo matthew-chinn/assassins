@@ -1,0 +1,5 @@
+<%= form_tag(url, method: "post", class:"#{type}-key") do %>
+  <%= text_field_tag :key, nil, placeholder: "#{type.capitalize} key", class:"#{type}-key input" %>
+  <%= submit_tag("Submit", class:"btn submit #{type}-key") %>
+<% end %>
+

@@ -106,6 +106,21 @@ class GamesController < ApplicationController
         redirect_to game_path(params[:game_id])
     end
 
+    def view_player
+        if request.get?
+            redirect_to root_path
+            return
+        end
+        if Player.exists?(key: params[:key])
+            @player = Player.find_by(key: params[:key])
+            @target = Player.exists?(id: @player.target_id) ? 
+                        Player.find(@player.target_id) : nil
+            return
+        end
+        flash[:error] = "Player with that key doesn't exist"
+        redirect_to root_path
+    end
+
     def save_edit_player
         @game = Game.find(params[:id])
         p = Player.find(params[:player_id])
@@ -123,6 +138,7 @@ class GamesController < ApplicationController
             render 'signup'
             return
         end
+        @player.assign_key 
 
         @game.update_time
         redirect_to action: 'show', id: @game.id, key: @key

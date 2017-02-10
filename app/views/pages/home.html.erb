@@ -24,5 +24,8 @@
 <div class="action container">
     <%= link_to "Create game", new_game_path, class: "create btn" %>
     <%= link_to "View games", games_path, class: "view btn" %>
-    <%= render template: 'games/_admin_key_form.html.erb' %>
+    <%= render partial: 'games/key_form.html.erb', 
+      locals: { url: redirect_to_game_path, type: "admin" } %>
+    <%= render partial: 'games/key_form.html.erb', 
+      locals: { url: view_player_path, type: "player" } %>
 </div>

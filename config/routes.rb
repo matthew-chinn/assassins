@@ -21,6 +21,9 @@ Rails.application.routes.draw do
    post 'games/:id/merge' => 'games#merge_games', as: :merge_games
 
    delete 'player/:id' => 'games#delete_player', as: :delete_player
+   post 'game/view-player' => 'games#view_player', as: :view_player
+   get  'game/view-player' => 'games#view_player'
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

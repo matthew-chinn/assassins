@@ -74,14 +74,14 @@ div.container.admin{
     }
 }
 
-.admin-key{
+.admin-key, .player-key{
     &.input, &.submit{
         width: initial;
         display: table-row;
     }
 }
 
-form.admin-key{
+form.admin-key, form.player-key{
     position: relative;
     top: 10px;
 }
@@ -95,4 +95,8 @@ form.admin-key{
     input{
         width: initial;
     }
+}
+
+.center-text{
+  text-align: center; 
 }

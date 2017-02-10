@@ -1,0 +1,9 @@
+<h1><%= @player.name %></h1>
+
+<div class="center-text">
+<% if @target %>
+  <p>Your target is <%= @target.name %><p>
+<% else %>
+  <p>You do not have a target right now<p>
+<% end %>
+</div>
