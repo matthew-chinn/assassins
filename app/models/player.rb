@@ -5,10 +5,12 @@ class Player < ActiveRecord::Base
     #give them a key
     def assign_key!
         key = ""
-        if self.name.length > 2
-            key += self.name[0..2]
+        #in case wasnt stripped before
+        name = self.name.strip
+        if name.length > 2
+            key += name[0..2]
         else
-            key += self.name
+            key += name
         end
         key += (self.team_id % 10).to_s
         key += rand(10).to_s

@@ -280,6 +280,7 @@ class GamesController < ApplicationController
         names = input.split(',')
         players = []
         names.each do |name|
+            name.strip!
             player = Player.new( name: name, team_id: team.id )
             players << player
         end
