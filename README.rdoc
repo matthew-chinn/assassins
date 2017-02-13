@@ -1,6 +1,8 @@
 TODO:
 tutorial
 better security for textbelt keys
+display quota remaining after sending alerts
+display characters left for sending message (256 char limit)
 
 == README
 This project helps facilitate a game of Assassins for a team setting. Assassins

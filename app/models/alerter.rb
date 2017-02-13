@@ -55,8 +55,6 @@ class Alerter
         })
         response = JSON.parse(res.body)
 
-        puts "RES: #{response}"
-
         if response["success"] == false #error
             puts "RES ERROR: #{response}"
         end
