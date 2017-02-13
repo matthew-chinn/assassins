@@ -6,9 +6,9 @@
         <!-- right now only phone works -->
         <%= f.text_field :contact, placeholder: "Phone Number (XXX-XXX-XXXX)" %>
 
-        <div class="inline-block" style="display: none;">
-            <%= f.label :phone, "Check if phone number, Uncheck if email" %>
-            <%= f.check_box :phone %>
+        <div class="inline-block" style="display:none">
+            <%# f.label :phone, "Check if phone number, Uncheck if email" %>
+            <%= f.check_box :phone, checked: true %>
         </div>
 
         <div class="inline-block">

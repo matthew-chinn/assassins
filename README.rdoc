@@ -1,5 +1,6 @@
 TODO:
 tutorial
+better security for textbelt keys
 
 == README
 This project helps facilitate a game of Assassins for a team setting. Assassins

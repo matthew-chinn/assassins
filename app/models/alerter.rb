@@ -47,13 +47,21 @@ class Alerter
 
         msg += "\nDont reply to this. If you have questions, ask the admin"
 
-        cmd = "curl -X POST http://textbelt.com/text \ "
-        cmd += "-d number=#{num}\ "
-        cmd += "-d \message='#{msg}'"
-        puts cmd
+        uri = URI.parse("https://textbelt.com/text")
+        res = Net::HTTP.post_form(uri, {
+            :number => num,
+            :message => msg,
+            :key=> "8f2c3a3df3853e507d50fd44cb1ab7082caaecd6z7i5lH3IGzllanDrHngJVqQJ7",
+        })
+        response = JSON.parse(res.body)
 
-        res = system(cmd)
-        return res
+        puts "RES: #{response}"
+
+        if response["success"] == false #error
+            puts "RES ERROR: #{response}"
+        end
+
+        return response["success"]
     end
 
     def self.send_email(player, msg, game)
