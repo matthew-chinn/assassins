@@ -45,7 +45,7 @@ class Alerter
         phone = Phonelib.parse player.contact
         num = phone.sanitized
 
-        msg += "\nDont reply to this. If you have questions, ask the admin"
+        msg += "\nIf you have a ?, ask the admin"
 
         uri = URI.parse("https://textbelt.com/text")
         res = Net::HTTP.post_form(uri, {
