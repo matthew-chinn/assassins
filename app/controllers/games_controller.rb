@@ -138,7 +138,7 @@ class GamesController < ApplicationController
             render 'signup'
             return
         end
-        @player.assign_key 
+        @player.assign_key! 
 
         @game.update_time
         redirect_to action: 'show', id: @game.id, key: @key
@@ -282,6 +282,7 @@ class GamesController < ApplicationController
         names.each do |name|
             name.strip!
             player = Player.new( name: name, team_id: team.id )
+            player.assign_key!
             players << player
         end
 
